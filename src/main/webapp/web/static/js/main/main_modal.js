@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const outFullTime = now.toISOString();
                 const effectiveType = (card.dataset.isMember === "true") ? "월정액" : type;
                 const parkNo = card.dataset.parkNo;
-                const info = await axios.get(`/parking/getPaymentInfo?parkNo=${parkNo}`);
+                const info = await axios.get(`${CONTEXT_PATH}/parking/getPaymentInfo?parkNo=${parkNo}`);
                 const paymentInfo = info.data;
                 const chargeResult = calculateParkingCharge(inFullTime, outFullTime, effectiveType, paymentInfo);
 
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // currentCard.dataset.inFullTime = fullTime; // 주차 시간
         // currentCard.dataset.carType = carType; // 차종
 
-        fetch('/parking/entry', {
+        fetch(CONTEXT_PATH + '/parking/entry', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}, // 데이터 형식 지정
             body: `parkingArea=${parkingArea}&carNum=${carNum}&carType=${carType}` // 보낼 데이터
@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const effectiveType = (window.currentCard.dataset.isMember === "true") ? "월정액" : carType;
 
         const parkNo = window.currentCard.dataset.parkNo;
-        const info = await axios.get(`/parking/getPaymentInfo?parkNo=${parkNo}`);
+        const info = await axios.get(`${CONTEXT_PATH}/parking/getPaymentInfo?parkNo=${parkNo}`);
         const paymentInfo = info.data;
         console.log('policy: ', paymentInfo);
         const chargeResult = calculateParkingCharge(inFullTime, outFullTime, effectiveType, paymentInfo);
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             console.log('결제 등록 시작')
-            const paymentResponse = await axios.post('/parking/payment', `parkNo=${parkNo}`, {
+            const paymentResponse = await axios.post(CONTEXT_PATH + '/parking/payment', `parkNo=${parkNo}`, {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             });
             if (!paymentResponse.data.success) {
@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             console.log('결제 등록 완료');
             console.log('출차 처리 시작');
-            const exitResponse = await axios.post('/parking/exit', `parkNo=${parkNo}`, {
+            const exitResponse = await axios.post(CONTEXT_PATH + '/parking/exit', `parkNo=${parkNo}`, {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             });
             if (!exitResponse.data.success) {
@@ -353,5 +353,5 @@ window.moveMembershipPage = function () {
     alert("신규 회원 등록 페이지로 이동합니다.");
 
     modal.hide();
-    window.location.href = '/member_list?pageNum=1&openNewMemberModal=true&carNum=' + encodeURIComponent(carNum);
+    window.location.href = CONTEXT_PATH + '/member_list?pageNum=1&openNewMemberModal=true&carNum=' + encodeURIComponent(carNum);
 }

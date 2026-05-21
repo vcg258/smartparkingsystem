@@ -1,0 +1,10 @@
+SET FOREIGN_KEY_CHECKS = 0;
+
+TRUNCATE TABLE admin;
+TRUNCATE TABLE members;
+TRUNCATE TABLE parking_history;
+TRUNCATE TABLE payment_history;
+TRUNCATE TABLE payment_info;
+TRUNCATE TABLE validation;
+
+SET FOREIGN_KEY_CHECKS = 1;

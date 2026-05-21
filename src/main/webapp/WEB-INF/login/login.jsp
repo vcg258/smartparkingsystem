@@ -12,6 +12,9 @@
     <script src="<%=request.getContextPath()%>/web/static/js/auth/f12Ban.js"></script>
     <script src="<%=request.getContextPath()%>/web/static/js/auth/loading.js"></script>
     <script src="<%=request.getContextPath()%>/web/static/js/auth/login.js"></script>
+    <script>
+        const CONTEXT_PATH = '<%= request.getContextPath() %>';
+    </script>
 
     <%-- 템플릿 수정 css --%>
     <style>
@@ -113,7 +116,7 @@
                                         </div>
 
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <a class="small" href="/password">비밀번호 재설정</a>
+                                            <a class="small" href="<%=request.getContextPath()%>/password">비밀번호 재설정</a>
                                             <button type="submit" class="btn btn-primary px-4">
                                                 다음
                                             </button>

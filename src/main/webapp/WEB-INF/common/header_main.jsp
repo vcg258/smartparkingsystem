@@ -15,10 +15,10 @@
       <span class="navbar-text">
         <ul class="navbar-nav d-flex flex-row gap-3 p-0 m-0" style="align-items: center;">
             <li class="nav-item">
-                <a href="/main/mypage" class="text-white text-decoration-none">MyPage</a>
+                <a href="${pageContext.request.contextPath}/main/mypage" class="text-white text-decoration-none">MyPage</a>
             </li>
             <li class="nav-item">
-                <a href="/logout" class="text-white text-decoration-none" onclick="return logout()">로그아웃</a>
+                <a href="${pageContext.request.contextPath}/logout" class="text-white text-decoration-none" onclick="return logout()">로그아웃</a>
             </li>
         </ul>
       </span>
@@ -26,6 +26,8 @@
 </nav>
 
 <script>
+    const CONTEXT_PATH = '${pageContext.request.contextPath}';
+
     document.addEventListener("DOMContentLoaded", function () {
         const currentPath = window.location.pathname;
         const navLinks = document.querySelectorAll('.navbar-nav .nav-link');

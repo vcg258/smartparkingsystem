@@ -167,7 +167,7 @@ function handleMemberCheck() {
         return;
     }
 
-    submitForm('/member_check', {carNum});
+    submitForm(CONTEXT_PATH + '/member_check', {carNum});
 }
 
 // ===================== 회원권 결제 모달 =====================
@@ -418,7 +418,7 @@ function handleAutoOpenNewMemberModal() {
         modal.show();
 
         // 주소 정리 (새로고침 시 다시 안 뜨게)
-        window.history.replaceState({}, document.title, '/member_list?pageNum=1');
+        window.history.replaceState({}, document.title, CONTEXT_PATH + '/member_list?pageNum=1');
     }
 }
 

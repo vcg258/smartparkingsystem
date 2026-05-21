@@ -12,6 +12,9 @@
     <script src="${pageContext.request.contextPath}/web/static/js/auth/f12Ban.js"></script>
     <script src="${pageContext.request.contextPath}/web/static/js/auth/loading.js"></script>
     <script src="${pageContext.request.contextPath}/web/static/js/auth/password.js"></script>
+    <script>
+        const CONTEXT_PATH = '${pageContext.request.contextPath}';
+    </script>
 </head>
 <link rel="icon" href="data:,">
 
@@ -51,7 +54,7 @@
                                         </div>
 
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <a class="small" href="/login">로그인 화면</a>
+                                            <a class="small" href="${pageContext.request.contextPath}/login">로그인 화면</a>
                                             <button type="submit" class="btn btn-primary px-4">
                                                 다음
                                             </button>
@@ -140,7 +143,7 @@
                                     </div>
 
                                     <div class="d-grid">
-                                        <a href="/login" class="btn btn-primary">
+                                        <a href="${pageContext.request.contextPath}/login" class="btn btn-primary">
                                             로그인 화면으로
                                         </a>
                                     </div>

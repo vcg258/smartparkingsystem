@@ -1,4 +1,4 @@
-<%@ page import="com.example.smartparkingsystem.dto.setting.PaymentInfoDTO" %>
+<%@ page import="com.example.parkingsystem.dto.setting.PaymentInfoDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     PaymentInfoDTO paymentInfoDTO = (PaymentInfoDTO) request.getAttribute("paymentInfoDTO");

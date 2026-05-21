@@ -50,7 +50,7 @@ function clickSubmit() {
     const formData = new FormData(form);
     const params = new URLSearchParams(formData);
 
-    fetch("/setting", {
+    fetch(CONTEXT_PATH + "/setting", {
         method: 'POST',
         body: params
     })

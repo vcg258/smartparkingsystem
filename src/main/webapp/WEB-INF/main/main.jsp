@@ -1,13 +1,13 @@
-<%@ page import="com.example.smartparkingsystem.dto.main.ParkingHistoryDTO" %>
+<%@ page import="com.example.parkingsystem.dto.main.ParkingHistoryDTO" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.smartparkingsystem.service.main.ParkingHistoryService" %>
+<%@ page import="com.example.parkingsystem.service.main.ParkingHistoryService" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="com.example.smartparkingsystem.service.member.MembersService" %>
-<%@ page import="com.example.smartparkingsystem.dao.member.MembersDAO" %>
-<%@ page import="com.example.smartparkingsystem.dto.member.MembersDTO" %>
-<%@ page import="com.example.smartparkingsystem.service.setting.PaymentInfoService" %>
-<%@ page import="com.example.smartparkingsystem.dto.setting.PaymentInfoDTO" %>
+<%@ page import="com.example.parkingsystem.service.member.MembersService" %>
+<%@ page import="com.example.parkingsystem.dao.member.MembersDAO" %>
+<%@ page import="com.example.parkingsystem.dto.member.MembersDTO" %>
+<%@ page import="com.example.parkingsystem.service.setting.PaymentInfoService" %>
+<%@ page import="com.example.parkingsystem.dto.setting.PaymentInfoDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     // parking_history 불러오기

@@ -53,12 +53,12 @@ function verifyOTP(event) {
         return;
     }
 
-    fetch("/main/mypage/email", {
+    fetch(CONTEXT_PATH + "/main/mypage/email/otp", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: 'box=1&otpCode=' + otpCode
+        body: 'otpCode=' + encodeURIComponent(otpCode)
     })
         .then(res => {
             if (res.status === 200) {
@@ -83,12 +83,12 @@ function returnOTP() {
     if (confirm('인증번호 재전송하시겠습니까?')) {
 
         showLoading()
-        fetch('/main/mypage/email', {
+        fetch(CONTEXT_PATH + '/main/mypage/email/resend', {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: 'box=returnOTP'
+            body: ''
         })
             .then(res => {
                 if (res.status === 200) {

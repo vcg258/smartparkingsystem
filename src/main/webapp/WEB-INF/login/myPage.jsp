@@ -1,4 +1,4 @@
-<%@ page import="com.example.smartparkingsystem.service.auth.AdminService" %>
+<%@ page import="com.example.parkingsystem.service.auth.AdminService" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
@@ -20,6 +20,9 @@
     <script src="${pageContext.request.contextPath}/web/static/js/auth/f12Ban.js"></script>
     <script src="${pageContext.request.contextPath}/web/static/js/auth/loading.js"></script>
     <script src="${pageContext.request.contextPath}/web/static/js/auth/myPage.js"></script>
+    <script>
+        const CONTEXT_PATH = '${pageContext.request.contextPath}';
+    </script>
 
     <style>
         #margin {

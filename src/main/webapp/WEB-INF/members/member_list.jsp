@@ -1,6 +1,6 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.smartparkingsystem.dto.member.PageResponseDTO" %>
-<%@ page import="com.example.smartparkingsystem.dto.member.MembersDTO" %>
+<%@ page import="com.example.parkingsystem.dto.member.PageResponseDTO" %>
+<%@ page import="com.example.parkingsystem.dto.member.MembersDTO" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%

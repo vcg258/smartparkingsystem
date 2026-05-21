@@ -97,12 +97,12 @@ function submitStep1(event) {
         return;
     }
 
-    fetch("/password", {
+    fetch(CONTEXT_PATH + "/password/id", {
         method: "POST",
         headers: {
             "Content-Type" : "application/x-www-form-urlencoded"
         },
-        body: "step=1&adminId=" + adminId
+        body: "adminId=" + adminId
     })
     goStep2();
 }
@@ -121,12 +121,12 @@ function submitStep2(event) {
 
     showLoading()
 
-    fetch("/password", {
+    fetch(CONTEXT_PATH + "/password/email", {
         method: "POST",
         headers: {
             "Content-Type" : "application/x-www-form-urlencoded"
         },
-        body: "step=2&admin=" + adminId + "&email=" + email
+        body: "email=" + email
     })
         .then(res => {
             if (res.status === 200) {
@@ -156,12 +156,12 @@ function submitStep3(event) {
 
     showLoading()
 
-    fetch("/password", {
+    fetch(CONTEXT_PATH + "/password/otp", {
         method: "POST",
         headers: {
             "Content-Type" : "application/x-www-form-urlencoded"
         },
-        body: "step=3&otpCode=" + otpCode
+        body: "otpCode=" + otpCode
     })
         .then(res => {
             if (res.status === 200) {
