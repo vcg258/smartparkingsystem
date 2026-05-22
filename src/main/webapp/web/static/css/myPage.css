@@ -1,0 +1,336 @@
+/* ============================================================
+ * myPage.css
+ * 관리자 마이페이지 (/main/mypage).
+ *
+ * USAGE: add to myPage.jsp <head> (AFTER styles.css):
+ *   <link rel="stylesheet" href="${pageContext.request.contextPath}/web/static/css/myPage.css">
+ *
+ * JSP markup / class names are NOT changed.
+ * ============================================================ */
+
+:root {
+    --primary:        #4a76c5;
+    --primary-hover:  #3a66b5;
+    --primary-light:  #6a96e8;
+    --primary-pale:   #eef2fb;
+
+    --bg-page:    #f5f5f5;
+    --bg-card:    #ffffff;
+    --bg-subtle:  #fafafa;
+
+    --text-strong:    #1a1a1b;
+    --text-primary:   #333333;
+    --text-secondary: #666666;
+    --text-muted:     #8a93aa;
+
+    --border:     #dee2e6;
+    --border-mid: #c8cfe0;
+
+    --accent-green:    #70AD47;
+    --accent-orange:   #ED7D31;
+    --accent-yellow:   #FFC000;
+    --accent-danger:   #dc3545;
+
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
+
+    --shadow-sm:         0 1px 4px  rgba(30, 50, 100, 0.07);
+    --shadow-card:       0 2px 8px  rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 4px 16px rgba(74, 118, 197, 0.12);
+
+    --transition: 0.2s ease;
+    --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+
+* { box-sizing: border-box; }
+
+/* === Fit-to-viewport (1920×1080, no scroll) ================ */
+html, body {
+    height: 100vh;
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg-page) !important;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+body > .navbar { flex: 0 0 auto; }
+body > footer  { flex: 0 0 auto; }
+
+body > .container-fluid {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: clamp(14px, 1.8vh, 24px) clamp(20px, 2vw, 32px) !important;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(10px, 1.4vh, 18px);
+}
+
+/* === Page heading "마이페이지" ============================= */
+.container-fluid > h4 {
+    flex: 0 0 auto;
+    margin: 0 !important;
+    font-size: clamp(22px, 1.4vw + 6px, 28px);
+    font-weight: 800;
+    color: var(--text-strong);
+    line-height: 1.2;
+    padding-bottom: clamp(8px, 1vh, 14px);
+    border-bottom: 2px solid var(--border);
+}
+
+.container-fluid > h4 b {
+    font-weight: 800;
+    color: var(--text-strong);
+}
+
+/* === Override the inline <style> in myPage.jsp ============= */
+/* The JSP ships:
+ *   #margin { margin-top: 30px; }
+ *   .row    { margin-top: 30px; }
+ *   h4      { margin-top: 25px; }
+ * — we use flex gap instead and zero these out.
+ */
+.container-fluid h4 { margin-top: 0 !important; }
+.container-fluid #margin { margin-top: 0 !important; }
+.container-fluid > .row { margin-top: 0 !important; flex: 0 0 auto; }
+
+/* === Alert (최초 로그인 안내) ============================== */
+.container-fluid .alert-warning {
+    background: #fff8ec !important;
+    border: 1px solid #ffe4b0 !important;
+    color: #6a4a00 !important;
+    border-radius: var(--radius-md) !important;
+    font-size: 14px;
+    padding: 12px 16px !important;
+    margin: 0 !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* === Cards (scoped to .container-fluid so it doesn't bleed
+ *   into modals on other pages that share styles.css) ======== */
+.container-fluid .card {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-card) !important;
+    margin-bottom: 0 !important;
+    transition: border-color var(--transition);
+    overflow: hidden;
+}
+
+.container-fluid .card:hover {
+    border-color: var(--primary) !important;
+}
+
+.container-fluid .card-header {
+    background: var(--bg-subtle) !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding: clamp(10px, 1.2vh, 16px) clamp(14px, 1.4vw, 22px) !important;
+    color: var(--text-strong) !important;
+    font-weight: 700;
+    font-size: clamp(13px, 0.85vw, 15px);
+    letter-spacing: 0.01em;
+}
+
+.container-fluid .card-header i.fas {
+    color: var(--primary);
+    margin-right: 8px !important;
+}
+
+.container-fluid .card-body {
+    padding: clamp(14px, 1.6vh, 22px) clamp(16px, 1.4vw, 24px) !important;
+}
+
+/* === Form labels & inputs ================================== */
+.container-fluid .form-label {
+    color: var(--text-secondary);
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 6px !important;
+}
+
+.container-fluid .form-control {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    color: var(--text-strong);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    padding: 8px 12px;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.container-fluid .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 118, 197, 0.12);
+    outline: none;
+}
+
+.container-fluid .form-control:disabled,
+.container-fluid .form-control[readonly] {
+    background: var(--bg-subtle);
+    color: var(--text-primary);
+    cursor: default;
+    opacity: 1;
+}
+
+/* === Tighten vertical rhythm inside cards ================== */
+.container-fluid .card-body .mb-3 {
+    margin-bottom: clamp(8px, 1vh, 14px) !important;
+}
+
+/* === Email input-group (input + 인증하기 button) =========== *
+ * The JSP wraps them in .input-group; remove the double border
+ * line where they meet.                                       */
+.container-fluid .input-group .form-control {
+    border-right: 0;
+}
+
+.container-fluid .input-group .btn {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    white-space: nowrap;
+}
+
+/* === Buttons (scoped) ====================================== */
+.container-fluid .btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    padding: 9px 22px;
+    transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.container-fluid .btn-primary:hover:not(:disabled) {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(74, 118, 197, 0.3);
+}
+.container-fluid .btn-primary:disabled {
+    background: var(--border) !important;
+    border-color: var(--border) !important;
+    color: var(--text-muted) !important;
+    opacity: 1;
+    cursor: not-allowed;
+}
+
+/* "정보 수정" button toggles to btn-success after verification */
+.container-fluid .btn-success {
+    background: var(--accent-green);
+    border-color: var(--accent-green);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    padding: 9px 22px;
+    transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.container-fluid .btn-success:hover {
+    background: #5e9038;
+    border-color: #5e9038;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(112, 173, 71, 0.3);
+}
+
+/* "인증하기" outline button */
+.container-fluid .btn-outline-primary {
+    background: #fff;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    transition: all var(--transition);
+}
+.container-fluid .btn-outline-primary:hover:not(:disabled) {
+    background: var(--primary-pale);
+    color: var(--primary-hover);
+}
+.container-fluid .btn-outline-primary:disabled {
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+    border-color: var(--border);
+    opacity: 1;
+}
+
+/* === Password-change card — replace harsh yellow ring ====== *
+ * The JSP applies .border-warning to the card and
+ * .bg-warning.text-dark to the card-header. We DON'T redefine
+ * Bootstrap's .border-warning class globally — instead we
+ * scope the override to the password card via its parent. */
+.container-fluid .card.border-warning {
+    border: 1px solid var(--border) !important;
+}
+.container-fluid .card.border-warning:hover {
+    border-color: var(--accent-orange) !important;
+}
+
+.container-fluid .card-header.bg-warning {
+    background: #fff5e6 !important;
+    color: #6a4a00 !important;
+    border-bottom: 1px solid #ffe4b0 !important;
+}
+
+.container-fluid .card-header.bg-warning i.fas {
+    color: var(--accent-orange) !important;
+}
+
+/* "비밀번호 변경" button — keep orange-amber but on brand */
+.container-fluid .btn-warning {
+    background: var(--accent-orange);
+    border-color: var(--accent-orange);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    padding: 9px 22px;
+    transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.container-fluid .btn-warning:hover {
+    background: #d76a21;
+    border-color: #d76a21;
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(237, 125, 49, 0.3);
+}
+
+/* === 로그인 정보 table ===================================== */
+.container-fluid .card .table-bordered {
+    margin-bottom: 0 !important;
+    border-color: var(--border) !important;
+}
+
+.container-fluid .card .table-bordered th {
+    background: var(--bg-subtle);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-color: var(--border) !important;
+    padding: 12px 16px !important;
+    vertical-align: middle;
+}
+
+.container-fluid .card .table-bordered td {
+    color: var(--text-strong);
+    font-size: 14px;
+    font-weight: 500;
+    border-color: var(--border) !important;
+    padding: 12px 16px !important;
+    vertical-align: middle;
+    font-family: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+}

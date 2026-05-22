@@ -9,9 +9,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <link href="${pageContext.request.contextPath}/web/static/css/styles.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/web/static/css/login.css">
     <script src="${pageContext.request.contextPath}/web/static/js/auth/f12Ban.js"></script>
     <script src="${pageContext.request.contextPath}/web/static/js/auth/loading.js"></script>
     <script src="${pageContext.request.contextPath}/web/static/js/auth/password.js"></script>
+    <script>
+        const CONTEXT_PATH = '${pageContext.request.contextPath}';
+    </script>
 </head>
 <link rel="icon" href="data:,">
 
@@ -51,7 +55,7 @@
                                         </div>
 
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <a class="small" href="/login">로그인 화면</a>
+                                            <a class="small" href="${pageContext.request.contextPath}/login">로그인 화면</a>
                                             <button type="submit" class="btn btn-primary px-4">
                                                 다음
                                             </button>
@@ -140,7 +144,7 @@
                                     </div>
 
                                     <div class="d-grid">
-                                        <a href="/login" class="btn btn-primary">
+                                        <a href="${pageContext.request.contextPath}/login" class="btn btn-primary">
                                             로그인 화면으로
                                         </a>
                                     </div>

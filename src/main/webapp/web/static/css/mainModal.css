@@ -1,39 +1,116 @@
-/* 입차 모달 전용 스타일 */
-#input-carNum:focus {
-    border-color: #0d6efd !important;
-    box-shadow: 0 0 0 0.25 margin-bottom rgba(13, 110, 253, 0.1) !important;
+/* ============================================================
+ * mainModal.css
+ * Entry / Exit / Receipt modal on /main.
+ * Targets project-specific IDs and classes only. The Bootstrap
+ * `.btn`, `.modal`, `.btn-check`, `.btn-outline-primary` rules
+ * here REFINE Bootstrap (using its own state hooks) but do not
+ * redefine the base components.
+ * ============================================================ */
+
+:root {
+    /* === Brand Colors === */
+    --primary:        #4a76c5;
+    --primary-hover:  #3a66b5;
+    --primary-light:  #6a96e8;
+    --primary-pale:   #eef2fb;
+
+    /* === Surface === */
+    --bg-page:    #f5f5f5;
+    --bg-card:    #ffffff;
+    --bg-subtle:  #fafafa;
+
+    /* === Text === */
+    --text-strong:    #1a1a1b;
+    --text-primary:   #333333;
+    --text-secondary: #666666;
+    --text-muted:     #8a93aa;
+
+    /* === Border === */
+    --border:     #dee2e6;
+    --border-mid: #c8cfe0;
+
+    /* === Status / Accent === */
+    --accent-green:    #70AD47;
+    --accent-orange:   #ED7D31;
+    --accent-yellow:   #FFC000;
+    --accent-danger:   #dc3545;
+    --stall-available: #e1e0e0;
+    --stall-occupied:  #bded8f;
+
+    /* === Radius === */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
+
+    /* === Shadow === */
+    --shadow-sm:         0 1px 4px  rgba(30, 50, 100, 0.07);
+    --shadow-card:       0 2px 8px  rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 4px 16px rgba(74, 118, 197, 0.12);
+    --shadow-board:      0 0 15px   rgba(0, 0, 0, 0.10);
+
+    /* === Motion === */
+    --transition: 0.2s ease;
+
+    /* === Typography === */
+    --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
-/* 라디오 버튼(차종 선택) 커스텀 */
+/* === Modal body / spacing =================================== */
+#parkingModal .modal-body {
+    padding: 2rem !important;
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+}
+
+#parkingModal .modal-content {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card-hover);
+}
+
+/* === Car-number input (entry) =============================== */
+#input-carNum {
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+#input-carNum:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(74, 118, 197, 0.12) !important;
+    outline: none;
+}
+
+/* === Car-type radio group (entry) ==========================
+ * Refine the existing .btn-check + .btn-outline-primary pair
+ * to use brand blue instead of Bootstrap default blue.
+ * =========================================================== */
 .btn-check:checked + .btn-outline-primary {
-    background-color: #e7f1ff !important;
-    color: #0d6efd !important;
-    border-color: #0d6efd !important;
-    box-shadow: 0 4px 10px rgba(13, 110, 253, 0.1);
+    background-color: var(--primary-pale) !important;
+    color: var(--primary) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 4px 10px rgba(74, 118, 197, 0.12);
 }
 
 .btn-outline-primary {
-    border: 2px solid #eee !important;
-    color: #666;
-    transition: all 0.2s ease;
+    border: 2px solid var(--border) !important;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    transition: all var(--transition);
 }
 
 .btn-outline-primary:hover {
-    background-color: #f8f9fa !important;
-    border-color: #ccc !important;
-    color: #333;
+    background-color: var(--bg-subtle) !important;
+    border-color: var(--border-mid) !important;
+    color: var(--text-primary);
 }
 
-/* 모달 내부 간격 및 스타일 개선 */
-#parkingModal .modal-body {
-    padding: 2rem !important; /* 내부 여백 대폭 확대 */
-}
-
-/* 출차 정보 리스트 (Table 대체 스타일) */
+/* === Exit-info list (info_list / info_item) ================= */
 .info-list {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* 항목 간 간격 */
+    gap: 15px;
     margin-bottom: 20px;
 }
 
@@ -50,24 +127,25 @@
     display: block;
     font-size: 1.15rem !important;
     font-weight: 650 !important;
-    color: #333 !important;
+    color: var(--text-primary) !important;
     margin-bottom: 12px !important;
 }
 
 .info-value {
     font-weight: 600;
     text-align: right;
+    color: var(--text-strong);
 }
 
-.info-value
-
-    /* 총 요금 강조 */
+/* Money emphasis (also used in receipt section) */
 #info-totalPrice {
     font-size: 1.4rem;
     letter-spacing: -0.5px;
+    color: var(--accent-danger);
+    font-weight: 700;
 }
 
-/* 버튼 디자인 개선 */
+/* === Modal footer buttons =================================== */
 .modal-footer {
     border-top: none !important;
     padding: 0 2rem 2rem 2rem !important;
@@ -75,6 +153,6 @@
 
 .modal-footer .btn {
     padding: 12px 25px;
-    border-radius: 12px;
+    border-radius: var(--radius-sm);
     font-weight: bold;
 }

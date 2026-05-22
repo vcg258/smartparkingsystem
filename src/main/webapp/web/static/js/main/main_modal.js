@@ -47,24 +47,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 modalAction.innerText = "입차 등록";
             } else {
                 modalTitle.innerText = id + " 출차 관리";
-                // 출차 처리 세팅
                 document.getElementById('section-exit').style.display = 'block';
                 btnMembershipPay.style.display = 'block';
 
-                const now = new Date();
-                const outFullTime = now.toISOString();
-                const effectiveType = (card.dataset.isMember === "true") ? "월정액" : type;
                 const parkNo = card.dataset.parkNo;
-                const info = await axios.get(`/parking/getPaymentInfo?parkNo=${parkNo}`);
-                const paymentInfo = info.data;
-                const chargeResult = calculateParkingCharge(inFullTime, outFullTime, effectiveType, paymentInfo);
+                // Java 서비스에서 계산한 미리보기 요금 조회
+                const info = await axios.get(`${CONTEXT_PATH}/parking/getPaymentInfo?parkNo=${parkNo}`);
+                const result = info.data;
 
-                // 데이터 매핑
-                document.getElementById('info-car').innerText = car; // 차량 번호
-                document.getElementById('info-type').innerText = type; // 차종
-                document.getElementById('info-inTime').innerText = formatDateTime(inFullTime); // 주차 시간
-                document.getElementById('info-outTime').innerText = formatDateTime(outFullTime); // 출차 시간
-                document.getElementById('info-totalPrice').innerText = chargeResult.total.toLocaleString() + "원";
+                // isMember는 서버 응답 기준으로 판단 (새로고침 없이도 정확하게 표시)
+                const memberLabel = result.isMember ? "(회원 할인 적용)" : "";
+
+                document.getElementById('info-car').innerText = result.carNum;
+                document.getElementById('info-type').innerText = type;
+                document.getElementById('info-inTime').innerText = formatDateTime(result.inTime);
+                document.getElementById('info-outTime').innerText = formatDateTime(result.outTime);
+                document.getElementById('info-totalPrice').innerText = result.finalCharge.toLocaleString() + "원";
                 document.getElementById('info-isMember').innerText = memberLabel;
 
                 modalAction.innerText = "결제하기";
@@ -113,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // currentCard.dataset.inFullTime = fullTime; // 주차 시간
         // currentCard.dataset.carType = carType; // 차종
 
-        fetch('/parking/entry', {
+        fetch(CONTEXT_PATH + '/parking/entry', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}, // 데이터 형식 지정
             body: `parkingArea=${parkingArea}&carNum=${carNum}&carType=${carType}` // 보낼 데이터
@@ -159,59 +157,53 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(err => alert('오류 발생! 관리자에게 문의하세요.' + err));
     }
 
-// 결제 진행 함수
+// 결제 진행 함수 — Java에서 계산 후 DB insert, 응답값으로 영수증 표시
     async function handlePayment() {
-
-     // 출차 -> 영수증
-        const inFullTime = window.currentCard.dataset.inFullTime;
-        const outFullTime = new Date().toISOString();
-        const carType = window.currentCard.dataset.carType;
-        const carNum = window.currentCard.dataset.carNum;
-        const effectiveType = (window.currentCard.dataset.isMember === "true") ? "월정액" : carType;
-
         const parkNo = window.currentCard.dataset.parkNo;
-        const info = await axios.get(`/parking/getPaymentInfo?parkNo=${parkNo}`);
-        const paymentInfo = info.data;
-        console.log('policy: ', paymentInfo);
-        const chargeResult = calculateParkingCharge(inFullTime, outFullTime, effectiveType, paymentInfo);
-        console.log('chargeResult: ', chargeResult);
-        // console.log("effectiveType:", effectiveType);
-        // console.log("isMember:", currentCard.dataset.isMember);
-        // console.log("chargeResult:", chargeResult);
 
+        try {
+            const paymentResponse = await axios.post(
+                CONTEXT_PATH + '/parking/payment',
+                `parkNo=${parkNo}`,
+                { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+            );
+            const data = paymentResponse.data;
 
-        // 영수증 데이터 매핑
-        document.getElementById('rec-car').innerText = carNum;
-        document.getElementById('rec-in').innerText = formatDateTime(inFullTime);
-        document.getElementById('rec-out').innerText = formatDateTime(outFullTime);
+            if (!data.success) {
+                alert('결제 실패! ' + data.message);
+                return;
+            }
 
-        document.getElementById('rec-totalTime').innerText = chargeResult.duration + "분";
-        document.getElementById('rec-basePrice').innerText = chargeResult.base.toLocaleString() + "원";
-        document.getElementById('rec-extraPrice').innerText = chargeResult.extra.toLocaleString() + "원";
+            // 영수증 데이터 매핑 (Java 계산값)
+            document.getElementById('rec-car').innerText       = data.carNum;
+            document.getElementById('rec-in').innerText        = formatDateTime(data.entryTime);
+            document.getElementById('rec-out').innerText       = formatDateTime(data.exitTime);
+            document.getElementById('rec-totalTime').innerText = data.totalMinutes + "분";
+            document.getElementById('rec-basePrice').innerText = data.baseCharge.toLocaleString() + "원";
+            document.getElementById('rec-extraPrice').innerText = data.extraCharge.toLocaleString() + "원";
 
-        // 할인 표시
-        const discountText = chargeResult.discount > 0 ?
-            `-${chargeResult.discount.toLocaleString()}원 (${chargeResult.discountName})`
-            : "0원";
-        document.getElementById('rec-discount').innerText = discountText;
+            const discountText = data.discountAmount > 0
+                ? `-${data.discountAmount.toLocaleString()}원 (${data.discountName})`
+                : "0원";
+            document.getElementById('rec-discount').innerText   = discountText;
+            document.getElementById('rec-totalPrice').innerText = data.finalCharge.toLocaleString() + "원";
 
-        // 최종 금액
-        document.getElementById('rec-totalPrice').innerText = chargeResult.total.toLocaleString() + "원";
+            // UI 전환
+            document.getElementById('section-exit').style.display    = 'none';
+            document.getElementById('section-receipt').style.display = 'block';
+            document.querySelector('#section-receipt h5').tabIndex = -1;
+            document.querySelector('#section-receipt h5').focus();
 
-        // UI 전환
-        document.getElementById('section-exit').style.display = 'none';
-        document.getElementById('section-receipt').style.display = 'block';
-
-        document.querySelector('#section-receipt h5').tabIndex = -1;
-        document.querySelector('#section-receipt h5').focus();
-
-        // 하단 버튼 숨기기
-        btnMembershipPay.style.display = 'none';
-        modalAction.style.display = 'none';
-        footerCloseBtn.style.display = 'none';
+            btnMembershipPay.style.display = 'none';
+            modalAction.style.display      = 'none';
+            footerCloseBtn.style.display   = 'none';
+        } catch (err) {
+            console.error('결제 처리 오류', err);
+            alert('오류 발생! 관리자에게 문의하세요.');
+        }
     }
 
-// 출차 후 영수증 화면 -> '정산 완료' 버튼 클릭
+// 출차 후 영수증 화면 -> '정산 완료' 버튼 클릭 — 출차 처리만 (결제는 결제하기 클릭 시 완료)
     document.getElementById('btn-close-final').addEventListener('click', async () => {
         if (!window.currentCard) return;
 
@@ -221,37 +213,24 @@ document.addEventListener('DOMContentLoaded', () => {
         btnFinal.innerText = '처리 중';
 
         try {
-            console.log('결제 등록 시작')
-            const paymentResponse = await axios.post('/parking/payment', `parkNo=${parkNo}`, {
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-            });
-            if (!paymentResponse.data.success) {
-                alert('결제 실패!' + paymentResponse.data.message);
-                return;
-            }
-
-            console.log('결제 등록 완료');
-            console.log('출차 처리 시작');
-            const exitResponse = await axios.post('/parking/exit', `parkNo=${parkNo}`, {
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            const exitResponse = await axios.post(CONTEXT_PATH + '/parking/exit', `parkNo=${parkNo}`, {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
             });
             if (!exitResponse.data.success) {
                 alert('출차 처리 실패!' + exitResponse.data.message);
                 return;
             }
-            console.log('출차 처리 완료')
 
             // 1. 데이터 초기화
-            window.currentCard.dataset.status = 'available';
-            window.currentCard.dataset.carNum = "";
+            window.currentCard.dataset.status    = 'available';
+            window.currentCard.dataset.carNum     = "";
             window.currentCard.dataset.inFullTime = "";
-            window.currentCard.dataset.carType = "";
-            window.currentCard.dataset.parkNo = "";
+            window.currentCard.dataset.carType    = "";
+            window.currentCard.dataset.parkNo     = "";
 
             // 2. UI 초기화
             window.currentCard.classList.replace('occupied', 'available');
-            // console.log(window.currentCard.classList);
-            window.currentCard.querySelector('.box-car').innerText = "사용 가능";
+            window.currentCard.querySelector('.box-car').innerText  = "사용 가능";
             window.currentCard.querySelector('.box-time').innerText = "";
 
             // 3. 모달 닫기
@@ -260,25 +239,13 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.hide();
             updateParkingCount();
             alert("정산이 완료되어 출차 처리되었습니다.");
-
-
-            // fetch('/parking/exit', {
-            //     method: 'POST',
-            //     headers: {'Content-Type': 'application/x-www-form-urlencoded'}, // 데이터 형식 지정
-            //     body: `parkNo=${parkNo}`
-            // })
-            //     .then(res => res.json()) // 서버의 응답을 JSON으로 변환
-            //     .then(data => { // 서버가 보낸 응답 객체
         } catch (err) {
             console.log('오류 발생! ' + err);
-            alert('오류 발생! 관리자에게 문의하세요.')
+            alert('오류 발생! 관리자에게 문의하세요.');
         } finally {
-            btnFinal.disabled = false;
-            btnFinal.disabled = false;
-            btnFinal.innerText = '정산 완료'
+            btnFinal.disabled  = false;
+            btnFinal.innerText = '정산 완료';
         }
-
-
     });
 
     function updateElapsedTime() {
@@ -353,5 +320,5 @@ window.moveMembershipPage = function () {
     alert("신규 회원 등록 페이지로 이동합니다.");
 
     modal.hide();
-    window.location.href = '/member_list?pageNum=1&openNewMemberModal=true&carNum=' + encodeURIComponent(carNum);
+    window.location.href = CONTEXT_PATH + '/member_list?pageNum=1&openNewMemberModal=true&carNum=' + encodeURIComponent(carNum);
 }

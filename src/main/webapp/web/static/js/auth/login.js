@@ -120,13 +120,13 @@ function submitStep1(event) {
 
     // Servlet 연동
     // TODO 로그인 상태유지 여부 추가 (유지기간 일단 30분으로 지정 상의 필요)
-    fetch("/login", {
+    fetch(CONTEXT_PATH + "/login/authenticate", {
         method: "POST",
         credentials: "same-origin", // 같은 도메일일때 세션을 자동으로 같이 넘겨주기 위해 설정
         headers: { // form값이 전송하는 파라미터를 받기위해 설정
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: "step=1&adminId=" + adminId + "&password=" + password + "&rememberMe=" + rememberMe
+        body: "adminId=" + adminId + "&password=" + password + "&rememberMe=" + rememberMe
     })
         .then(res => {
             if (res.status === 403) {
@@ -153,13 +153,13 @@ function submitEmailStep(event) {
     // 로딩 표시
     showLoading()
 
-    fetch("/login", {
+    fetch(CONTEXT_PATH + "/login/email", {
         method: "POST",
         credentials: "same-origin",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: "step=2&email=" + email
+        body: "email=" + email
     })
         .then(res => {
             if (res.status === 200) {
@@ -191,19 +191,27 @@ function submitStep3(event) {
         return;
     }
 
-    fetch("/login", {
+    fetch(CONTEXT_PATH + "/login/otp", {
         method: "POST",
         credentials: "same-origin",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded"
         },
-        body: "step=3&otpCode=" + otpCode
+        body: "otpCode=" + otpCode
     })
         .then(res => {
-            if (res.status === 200) {
+            if (res.redirected) {
                 clearInterval(timerInterval);
                 alert("[OTP Success] 인증 완료")
-                window.location.href = "/main";
+                window.location.href = res.url;
+            } else if (res.status === 200) {
+                clearInterval(timerInterval);
+                alert("[OTP Success] 인증 완료")
+                window.location.href = CONTEXT_PATH + "/main";
+            } else if (res.status === 202) {
+                clearInterval(timerInterval);
+                alert("[OTP Success] 인증 완료")
+                window.location.href = CONTEXT_PATH + "/setting?noPolicy=true";
             } else if (res.status === 401) {
                 alert("[OTP Fail] \n 인증번호가 일치 하지 않습니다.")
             } else if (res.status === 403) {

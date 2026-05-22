@@ -8,10 +8,14 @@
     <title>관리자 로그인</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="<%=request.getContextPath()%>/web/static/css/styles.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/web/static/css/login.css">
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="<%=request.getContextPath()%>/web/static/js/auth/f12Ban.js"></script>
     <script src="<%=request.getContextPath()%>/web/static/js/auth/loading.js"></script>
     <script src="<%=request.getContextPath()%>/web/static/js/auth/login.js"></script>
+    <script>
+        const CONTEXT_PATH = '<%= request.getContextPath() %>';
+    </script>
 
     <%-- 템플릿 수정 css --%>
     <style>
@@ -113,7 +117,7 @@
                                         </div>
 
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <a class="small" href="/password">비밀번호 재설정</a>
+                                            <a class="small" href="<%=request.getContextPath()%>/password">비밀번호 재설정</a>
                                             <button type="submit" class="btn btn-primary px-4">
                                                 다음
                                             </button>

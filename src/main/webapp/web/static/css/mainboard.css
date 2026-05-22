@@ -1,124 +1,280 @@
+/* ============================================================
+ * mainboard.css
+ * Dashboard / parking-board page (/main).
+ * Bootstrap classes are NOT redefined here.
+ * ============================================================ */
+
+:root {
+    /* === Brand Colors === */
+    --primary:        #4a76c5;
+    --primary-hover:  #3a66b5;
+    --primary-light:  #6a96e8;
+    --primary-pale:   #eef2fb;
+
+    /* === Surface === */
+    --bg-page:    #f5f5f5;
+    --bg-card:    #ffffff;
+    --bg-subtle:  #fafafa;
+
+    /* === Text === */
+    --text-strong:    #1a1a1b;
+    --text-primary:   #333333;
+    --text-secondary: #666666;
+    --text-muted:     #8a93aa;
+
+    /* === Border === */
+    --border:     #dee2e6;
+    --border-mid: #c8cfe0;
+
+    /* === Status / Accent === */
+    --accent-green:    #70AD47;
+    --accent-orange:   #ED7D31;
+    --accent-yellow:   #FFC000;
+    --accent-danger:   #dc3545;
+    --stall-available: #e1e0e0;
+    --stall-occupied:  #bded8f;
+
+    /* === Radius === */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
+
+    /* === Shadow === */
+    --shadow-sm:         0 1px 4px  rgba(30, 50, 100, 0.07);
+    --shadow-card:       0 2px 8px  rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 4px 16px rgba(74, 118, 197, 0.12);
+    --shadow-board:      0 0 15px   rgba(0, 0, 0, 0.10);
+
+    /* === Motion === */
+    --transition: 0.2s ease;
+
+    /* === Typography === */
+    --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+/* === Reset (page-local) ===================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* 기본 폰트 설정 */
-body {
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif !important;
-    background-color: #f5f5f5;
-    margin: 0;
-    padding: 0;
+/* === Fit-to-viewport (1920×1080, no scroll) ================ */
+html, body {
+    height: 100vh;
 }
 
-/*!* 헤더 하단 마진 제거 *!*/
-/*.navbar {*/
-/*    width: 100%;*/
-/*    margin-bottom: 0 !important;*/
-/*    padding-top: 15px !important;*/
-/*    padding-bottom: 15px !important;*/
-/*}*/
+body {
+    font-family: var(--font-sans) !important;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
 
+/* navbar (header_main.jsp) and footer keep their natural height; main fills */
+body > .navbar { flex: 0 0 auto; }
+body > footer  { flex: 0 0 auto; }
+
+/* === Page container ========================================= */
 .container-fluid.mt-4 {
     background: none !important;
     border: none !important;
     box-shadow: none !important;
     width: 100% !important;
-    padding: 20px;
-    display: block;
-    overflow-x: auto;
+    padding: 16px 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    margin-top: 0 !important;
 }
 
+/* === Section header (title + search) ======================== */
 .section-header {
     display: flex !important;
     justify-content: space-between !important;
     align-items: flex-end;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #e0e0e0;
+    margin-bottom: 14px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
     width: 100%;
-    min-width: 1000px;
     box-sizing: border-box;
+    flex: 0 0 auto;
 }
 
 .section-title {
-    font-size: 28px;
+    font-size: clamp(20px, 1.5vw + 6px, 28px);
     font-weight: 800;
-    color: #1a1a1b;
+    color: var(--text-strong);
     margin-bottom: 8px;
     display: block;
 }
 
 .section-header p b {
-    color: #4a76c5;
+    color: var(--primary);
     font-weight: 700;
 }
 
-/* 검색창 입력 박스 미세 조정 */
+/* === Search input + button ================================== */
 #inputCarNum {
     width: 50%;
-    border: 1px solid #ced4da;
-    border-radius: 6px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
     font-size: 0.95rem;
+    transition: border-color var(--transition);
+}
+
+#inputCarNum:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 118, 197, 0.12);
+    outline: none;
 }
 
 #btnCarSearch {
-    background-color: #6c757d;
+    background-color: var(--text-secondary);
     border: none;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     font-weight: 600;
-    transition: background 0.2s;
+    transition: background var(--transition);
 }
 
 #btnCarSearch:hover {
-    background-color: #5a6268;
+    background-color: #555;
 }
 
-/* 전체 주차 보드 (큰 구역) */
-#parking-board { width: fit-content;
+/* === Parking board (the white tray) ========================= */
+#parking-board {
     display: flex !important;
     justify-content: center !important;
+    align-items: center;
 
-    background-color: #ffffff !important;
-    border: 1px solid #6a6a6a !important;
-    border-radius: 20px !important;
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-xl) !important;
 
-    padding: 60px !important;
+    /* responsive padding — shrinks on smaller displays */
+    padding: clamp(20px, 2.5vw, 48px) clamp(24px, 3vw, 60px) !important;
     width: 100% !important;
-    min-width: 1000px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1) !important;
+    flex: 1 1 auto;
+    min-height: 0;
+    box-shadow: var(--shadow-board) !important;
+    overflow: hidden;
 }
 
-/* 주차장 전체 레이아웃 (도면용) */
+/* === Parking layout grid ==================================== */
 .layout-wrapper {
-    width:100%; max-width:1400px; height:65vh; min-height:600px;
-    display:flex; justify-content:space-between; align-items:stretch;
-    border-radius: 15px;
+    width: 100%;
+    max-width: 1400px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    /* responsive gap between left/center/right groups */
+    gap: clamp(24px, 3vw, 64px);
+    border-radius: var(--radius-lg);
 }
 
-/* 주차장 좌/우 구역 */
-.column { height:100%; display:flex; flex-direction:column; justify-content:space-between; }
+.column {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* responsive vertical gap between stalls */
+    gap: clamp(8px, 1.4vh, 22px);
+}
 
-/* 주차장 좌/우 구역 주차 공간 */
-.column .parking-card { width:160px; height:90px; cursor:pointer; }
+/* Side stalls (A-1..A-5, A-16..A-20) — landscape orientation.
+ * Width: min 110, ideal scales with vw, capped at 160
+ * Height: scales with vh similarly                            */
+.column .parking-card {
+    width: clamp(110px, 9vw, 160px);
+    height: clamp(56px, 7vh, 92px);
+    cursor: pointer;
+}
 
-/* 주차장 중앙 구역 레이아웃 */
 .center-wrapper { width: auto; }
 
-/* 주차장 중앙 상/하단 구역 */
-.central-column { height:100%; display:flex; flex-direction:column; justify-content:space-between; }
-.center-row { display:flex; gap:25px; }
+.central-column {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* responsive gap between the two centre rows */
+    gap: clamp(14px, 2.5vh, 36px);
+}
 
-/* 주차장 중앙 구역 주차 공간 */
-.central-column .parking-card { width:90px; height:160px; flex-shrink: 0; cursor:pointer; }
+.center-row {
+    display: flex;
+    gap: clamp(10px, 1.2vw, 22px);
+}
 
-/* 공통 (parking_card.jsp) */
-.parking-card { position:relative; border:2px solid #333; border-radius:8px; box-sizing:border-box; display:flex; flex-direction:column; justify-content:center; align-items:center; }
-.box-id { position:absolute; top:6px; left:6px; font-size:11px; } /* 주차 구역 (A-1 ~ A-20) */
-.box-car { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:18px; font-weight:bold; width: 100%; text-align: center;}
-.box-time { position:absolute; bottom:6px; left:50%; transform:translateX(-50%); font-size:10px; color:#555; } /* 주차 시간 */
+/* Centre stalls (A-6..A-15) — portrait orientation */
+.central-column .parking-card {
+    width: clamp(74px, 5vw, 100px);
+    height: clamp(108px, 14vh, 156px);
+    flex-shrink: 0;
+    cursor: pointer;
+}
 
-/* 주차 공간 상태별 배경 색*/
-.available { background-color: #e1e0e0; }
-.occupied { background-color: #bded8f; }
+/* Centre column has less horizontal room; shrink the car-number text slightly */
+.central-column .parking-card .box-car {
+    font-size: clamp(13px, 0.9vw, 16px);
+}
+
+/* === Stall card (parking_card.jsp) ========================== */
+.parking-card {
+    position: relative;
+    border: 2px solid var(--text-primary);
+    border-radius: var(--radius-md);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.parking-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow-card-hover);
+}
+
+.box-id {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    font-size: clamp(10px, 0.7vw, 12px);
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.box-car {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(14px, 1.05vw, 19px);
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    color: var(--text-strong);
+}
+
+.box-time {
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: clamp(9px, 0.65vw, 11px);
+    color: var(--text-secondary);
+}
+
+/* === Stall status ============================================ */
+.available { background-color: var(--stall-available); }
+.occupied  { background-color: var(--stall-occupied); }

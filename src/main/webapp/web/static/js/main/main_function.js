@@ -11,7 +11,7 @@ function formatDateTime(dateStr) {
 // 주차 현황 숫자 업데이트 함수
 function updateParkingCount() {
     const occupiedCount = document.querySelectorAll('.parking-card.occupied').length;
-    const displayCount = document.querySelector('h3 + p b');
+    const displayCount = document.getElementById('occupiedCountText');
     if (displayCount) {
         displayCount.innerText = occupiedCount + "대";
     }

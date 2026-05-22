@@ -42,7 +42,7 @@
                 <input type="checkbox" id="includeMembership">
                 회원권 매출 포함
             </label>
-            <button class="btn btn-primary" id="searchBtn" onclick="loadChart()">조회</button>
+            <button class="btn btn-primary" id="searchBtn" onclick="reloadStatistics()">조회</button>
         </div>
     </div>
 
@@ -81,7 +81,7 @@
     </script>
 
     <!-- js 불러오기 -->
-    <script src="${pageContext.request.contextPath}/web/static/js/statistic/statistic.js"></script>
+    <script src="${pageContext.request.contextPath}/web/static/js/statistic/statistic.js?v=<%= System.currentTimeMillis() %>"></script>
 
 </div>
 <footer>
