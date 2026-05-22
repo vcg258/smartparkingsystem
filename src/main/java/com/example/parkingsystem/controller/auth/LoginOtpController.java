@@ -64,7 +64,7 @@ public class LoginOtpController extends HttpServlet {
     }
 
     // 비밀번호 재설정 대상 계정은 메인 대신 마이페이지로 바로 이동
-    // 정책이 없는 경우 202로 응답 → JS에서 setting 페이지로 이동
+    // 정책이 없는 경우 202로 응답 -> JS에서 setting 페이지로 이동
     private void completeLogin(HttpServletRequest req, HttpServletResponse resp, HttpSession session, String adminId)
             throws IOException {
         session.setAttribute("adminId", adminId);
@@ -77,7 +77,7 @@ public class LoginOtpController extends HttpServlet {
             return;
         }
 
-        // 정책이 없으면 202 반환 → JS에서 /setting?noPolicy=true 로 이동
+        // 정책이 없으면 202 반환 -> JS에서 /setting?noPolicy=true 로 이동
         if (paymentInfoService.getInfo() == null) {
             log.info("로그인 후 정책 없음, setting 페이지로 리다이렉트 adminId={}", adminId);
             resp.setStatus(HttpServletResponse.SC_ACCEPTED); // 202

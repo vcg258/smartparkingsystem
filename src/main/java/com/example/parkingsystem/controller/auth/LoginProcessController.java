@@ -32,7 +32,7 @@ public class LoginProcessController extends HttpServlet {
                         HttpSession session = req.getSession();
                         session.setAttribute("adminId", adminDTO.getAdminId());
                         if (paymentInfoService.getInfo() == null) {
-                            log.info("자동 로그인 후 정책 없음 → setting 페이지로 리다이렉트 adminId={}", adminDTO.getAdminId());
+                            log.info("자동 로그인 후 정책 없음 -> setting 페이지로 리다이렉트 adminId={}", adminDTO.getAdminId());
                             resp.sendRedirect(req.getContextPath() + "/setting?noPolicy=true");
                         } else {
                             resp.sendRedirect(req.getContextPath() + "/main");

@@ -75,7 +75,7 @@ public class AuthFilter implements Filter {
         // 정책이 없으면 setting 페이지 외 모든 접근 차단
         if (PaymentInfoService.INSTANCE.getInfo() == null) {
             if (!servletPath.startsWith("/setting")) {
-                log.info("정책 미설정 → setting 페이지로 강제 이동 adminId={}", adminId);
+                log.info("정책 미설정 -> setting 페이지로 강제 이동 adminId={}", adminId);
                 resp.sendRedirect(contextPath + "/setting?noPolicy=true");
                 return;
             }
