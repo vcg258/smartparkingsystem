@@ -1,0 +1,356 @@
+/* ============================================================
+ * login.css
+ * Login + step authentication page (/login).
+ *
+ * USAGE: add this AFTER bootstrap & styles.css in login.jsp:
+ *   <link rel="stylesheet" href="${pageContext.request.contextPath}/web/static/css/login.css">
+ *
+ * Refines Bootstrap and the inline <style> stepper in login.jsp.
+ * Same tokens as the other pages in this design system.
+ *
+ * Also safe to include on:
+ *   - password.jsp, emailVerification.jsp, myPage.jsp
+ *   - 404.jsp / 500.jsp (full-bleed friendly)
+ * ============================================================ */
+
+:root {
+    --primary:        #4a76c5;
+    --primary-hover:  #3a66b5;
+    --primary-light:  #6a96e8;
+    --primary-pale:   #eef2fb;
+
+    --bg-page:    #f5f5f5;
+    --bg-card:    #ffffff;
+    --bg-subtle:  #fafafa;
+
+    --text-strong:    #1a1a1b;
+    --text-primary:   #333333;
+    --text-secondary: #666666;
+    --text-muted:     #8a93aa;
+
+    --border:     #dee2e6;
+    --border-mid: #c8cfe0;
+
+    --accent-green:    #70AD47;
+    --accent-orange:   #ED7D31;
+    --accent-yellow:   #FFC000;
+    --accent-danger:   #dc3545;
+
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
+
+    --shadow-sm:         0 1px 4px  rgba(30, 50, 100, 0.07);
+    --shadow-card:       0 2px 8px  rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 4px 16px rgba(74, 118, 197, 0.12);
+    --shadow-board:      0 0 15px   rgba(0, 0, 0, 0.10);
+
+    --transition: 0.2s ease;
+    --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+/* Pretendard import (login.jsp does NOT import it itself) */
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css");
+
+/* === Fit-to-viewport ======================================= */
+html, body {
+    height: 100vh;
+}
+
+body.bg-light {
+    background-color: var(--bg-page) !important;
+    font-family: var(--font-sans) !important;
+    color: var(--text-primary);
+    margin: 0;
+    overflow: hidden;
+}
+
+/* The JSP has `#layoutAuthentication { display: flex }` inline.
+ * Its child collapses to content-width without help, which squishes
+ * the centred Bootstrap row.  Make it fill instead. */
+#layoutAuthentication {
+    display: flex !important;
+    width: 100%;
+    min-height: 100vh;
+}
+
+#layoutAuthentication_content {
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+}
+
+/* The JSP uses <main class="d-flex ... vh-100"> so it already
+ * occupies the full viewport.  We just need to make sure nothing
+ * overflows out of it. */
+main.vh-100 {
+    height: 100vh !important;
+    overflow: hidden;
+    padding: 16px 0;
+    width: 100%;
+}
+
+/* === Login card ============================================ */
+#layoutAuthentication .card {
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-lg) !important;
+    background: var(--bg-card);
+    box-shadow: 0 12px 32px rgba(30, 50, 100, 0.08), var(--shadow-card) !important;
+    overflow: hidden;
+    margin-top: 0 !important;
+}
+
+#layoutAuthentication .card-header {
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 24px 20px !important;
+}
+
+#layoutAuthentication .card-header h4 {
+    font-weight: 800;
+    color: var(--text-strong);
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+}
+
+#layoutAuthentication .card-body {
+    padding: 24px !important;
+}
+
+#layoutAuthentication .card-footer {
+    background: var(--bg-subtle);
+    border-top: 1px solid var(--border);
+    color: var(--text-muted) !important;
+    font-size: 12px;
+    padding: 14px 24px !important;
+}
+
+/* === Stepper (overrides the inline <style> in login.jsp) === */
+.auth-stepper {
+    gap: 14px !important;
+    margin-top: 6px !important;
+}
+
+.step-item {
+    width: 32px !important;
+    height: 32px !important;
+    background-color: var(--bg-subtle) !important;
+    color: var(--text-muted) !important;
+    border: 1px solid var(--border);
+    font-weight: 700;
+    font-size: 13px;
+    transition: background var(--transition), color var(--transition), border-color var(--transition);
+}
+
+.step-item.active {
+    background-color: var(--primary) !important;
+    color: #fff !important;
+    border-color: var(--primary);
+    box-shadow: 0 4px 10px rgba(74, 118, 197, 0.25);
+}
+
+.step-line {
+    width: 56px !important;
+    background-color: var(--border) !important;
+    height: 2px !important;
+}
+
+/* === Floating inputs ======================================= */
+#layoutAuthentication .form-floating > label {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+#layoutAuthentication .form-control {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: #fff;
+    color: var(--text-strong);
+    font-family: var(--font-sans);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+#layoutAuthentication .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 118, 197, 0.12);
+}
+
+/* Remember-me checkbox */
+#layoutAuthentication .form-check-input:checked {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+#layoutAuthentication .form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(74, 118, 197, 0.12);
+    border-color: var(--primary);
+}
+
+#layoutAuthentication .form-check-label {
+    color: var(--text-secondary);
+}
+
+/* "비밀번호 재설정" link */
+#layoutAuthentication a.small {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+#layoutAuthentication a.small:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+/* === Buttons (scoped) ====================================== */
+#layoutAuthentication .btn-primary,
+#layoutAuthentication .btn-success {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    padding: 10px 20px;
+    white-space: nowrap;
+    transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+#layoutAuthentication .btn-primary:hover,
+#layoutAuthentication .btn-success:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(74, 118, 197, 0.3);
+}
+
+#layoutAuthentication .btn-primary:active,
+#layoutAuthentication .btn-success:active {
+    transform: translateY(0);
+}
+
+#layoutAuthentication .btn-secondary {
+    background-color: #fff;
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    padding: 10px 20px;
+    white-space: nowrap;
+    transition: background var(--transition), border-color var(--transition);
+}
+
+#layoutAuthentication .btn-secondary:hover {
+    background-color: var(--bg-subtle);
+    border-color: var(--border-mid);
+    color: var(--text-primary);
+}
+
+/* === OTP step 3 ============================================ */
+#step3 .fa-envelope {
+    color: var(--primary) !important;
+}
+
+#step3 .badge.bg-info {
+    background: var(--primary-pale) !important;
+    color: var(--primary) !important;
+    border: 1px solid var(--primary);
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+}
+
+#emailText {
+    color: var(--text-secondary) !important;
+}
+
+/* === Demo-account alert (subdued, no garish bootstrap blue) === */
+.alert-info {
+    background: var(--bg-subtle) !important;
+    border: 1px dashed var(--border-mid) !important;
+    color: var(--text-secondary) !important;
+    border-radius: var(--radius-md);
+    font-size: 12.5px;
+    line-height: 1.6;
+    padding: 12px 14px;
+}
+
+.alert-info strong {
+    color: var(--text-strong);
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+.alert-info code {
+    background: #fff;
+    color: var(--primary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 12px;
+}
+
+/* === Warning alert (password.jsp uses .alert-warning) ====== */
+.alert-warning {
+    background: #fff8ec !important;
+    border: 1px solid #ffe4b0 !important;
+    color: #8a6200 !important;
+    border-radius: var(--radius-md);
+    font-size: 12.5px;
+    line-height: 1.6;
+    padding: 12px 14px;
+}
+
+.alert-warning strong {
+    color: #6a4a00;
+    display: inline-block;
+    margin-bottom: 4px;
+}
+
+/* === password.jsp specifics =============================== */
+/* Step descriptions (.text-muted small) */
+#layoutAuthentication .small.text-muted {
+    color: var(--text-secondary) !important;
+    line-height: 1.55;
+}
+
+/* Email input-group (email + 인증하기 button) */
+#layoutAuthentication .input-group .form-control {
+    border-right: 0;
+}
+
+#layoutAuthentication .input-group .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* Clear step (success) */
+#clearStep .fa-check-circle {
+    color: var(--accent-green) !important;
+}
+
+#clearStep .text-success {
+    color: var(--accent-green) !important;
+    font-weight: 700;
+}
+
+#clearStep .d-grid .btn-primary {
+    padding: 12px 20px;
+}
+
+/* === 404 / 500 typography helper =========================== *
+ * (Safe to leave un-used on the login page itself)
+ * =========================================================== */
+.page-error h1 {
+    font-size: 96px;
+    font-weight: 800;
+    color: var(--text-strong);
+    letter-spacing: -0.04em;
+    margin-bottom: 8px;
+}
+
+.page-error p {
+    color: var(--text-muted);
+}

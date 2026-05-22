@@ -1,9 +1,10 @@
 package com.example.parkingsystem.controller.member;
 
-import com.example.parkingsystem.dao.setting.PaymentInfoDAO;
 import com.example.parkingsystem.dto.member.PageRequestDTO;
 import com.example.parkingsystem.dto.member.PageResponseDTO;
+import com.example.parkingsystem.dto.setting.PaymentInfoDTO;
 import com.example.parkingsystem.service.member.MembersService;
+import com.example.parkingsystem.service.setting.PaymentInfoService;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -18,7 +19,7 @@ import java.io.IOException;
 @WebServlet("/member_list")
 public class MemberListController extends HttpServlet {
     private final MembersService membersService = MembersService.INSTANCE;
-    private final PaymentInfoDAO paymentInfoDAO = new PaymentInfoDAO();
+    private final PaymentInfoService paymentInfoService = PaymentInfoService.INSTANCE;
 
     // 회원 목록 화면과 검색 조건을 조회해서 JSP에 전달
     @Override
@@ -57,7 +58,7 @@ public class MemberListController extends HttpServlet {
         req.setAttribute("openNewMemberModal", req.getParameter("openNewMemberModal"));
         req.setAttribute("prefillCarNum", req.getParameter("carNum"));
 
-        var paymentInfo = paymentInfoDAO.selectInfo();
+        var paymentInfo = paymentInfoService.getInfo();
         if (paymentInfo != null) {
             req.setAttribute("memberCharge", paymentInfo.getMemberCharge());
         } else {

@@ -30,15 +30,21 @@ public enum PaymentInfoService {
 
     // setting 조회
     public PaymentInfoDTO getInfo() {
-        if (null == paymentInfoDAO.selectInfo()) {
-            log.error("Null Pointer Exception");
+        PaymentInfoVO paymentInfoVO = paymentInfoDAO.selectInfo();
+        if (paymentInfoVO == null) {
+            log.warn("정책 데이터 없음");
             return null;
         }
-        return modelMapper.map(paymentInfoDAO.selectInfo(), PaymentInfoDTO.class);
+        return modelMapper.map(paymentInfoVO, PaymentInfoDTO.class);
     }
 
     // mainboard 요금 계산용 입차 시간 기준 정책 조회
     public PaymentInfoDTO getInfoByEntryTime(LocalDateTime entryTime) {
-        return modelMapper.map(paymentInfoDAO.selectInfoByEntryTime(entryTime), PaymentInfoDTO.class);
+        PaymentInfoVO paymentInfoVO = paymentInfoDAO.selectInfoByEntryTime(entryTime);
+        if (paymentInfoVO == null) {
+            log.warn("입차 시간 기준 정책 없음 entryTime={}", entryTime);
+            return null;
+        }
+        return modelMapper.map(paymentInfoVO, PaymentInfoDTO.class);
     }
 }

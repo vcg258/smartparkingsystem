@@ -1,0 +1,482 @@
+/* ============================================================
+ * member.css
+ * Member management page (/member_list) + its four modals
+ * (newMemberModal, viewMemberModal, membershipPayModal,
+ * editMemberModal).
+ *
+ * USAGE: replace the two existing <link>s in member_list.jsp:
+ *
+ *   - <link ... mainboard.css>           ❌ remove
+ *   + <link ... member.css>              ✅ this file
+ *   - <link ... membership_receipt.css>  ✅ keep (print-only)
+ *
+ * JSP markup / class names are NOT changed.
+ * ============================================================ */
+
+:root {
+    --primary:        #4a76c5;
+    --primary-hover:  #3a66b5;
+    --primary-light:  #6a96e8;
+    --primary-pale:   #eef2fb;
+
+    --bg-page:    #f5f5f5;
+    --bg-card:    #ffffff;
+    --bg-subtle:  #fafafa;
+
+    --text-strong:    #1a1a1b;
+    --text-primary:   #333333;
+    --text-secondary: #666666;
+    --text-muted:     #8a93aa;
+
+    --border:     #dee2e6;
+    --border-mid: #c8cfe0;
+
+    --accent-green:    #70AD47;
+    --accent-orange:   #ED7D31;
+    --accent-yellow:   #FFC000;
+    --accent-danger:   #dc3545;
+
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
+
+    --shadow-sm:         0 1px 4px  rgba(30, 50, 100, 0.07);
+    --shadow-card:       0 2px 8px  rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 4px 16px rgba(74, 118, 197, 0.12);
+    --shadow-board:      0 0 15px   rgba(0, 0, 0, 0.10);
+
+    --transition: 0.2s ease;
+    --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+/* === Fit-to-viewport (1920×1080, no scroll) ================ */
+html, body {
+    height: 100vh;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-page) !important;
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+body > .navbar { flex: 0 0 auto; }
+body > footer  { flex: 0 0 auto; }
+
+/* Page container */
+body > .container-fluid.mt-4 {
+    flex: 1 1 auto;
+    min-height: 0;
+    padding: 16px 24px !important;
+    overflow: hidden;
+    margin-top: 0 !important;
+    display: flex;
+    flex-direction: column;
+}
+
+body > .container-fluid.mt-4 > .content {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* === Section header (title + search form) ================== */
+.section-header {
+    flex: 0 0 auto;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--border);
+}
+
+.section-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--text-strong);
+    line-height: 1.2;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.section-title b {
+    font-weight: 800;
+    color: var(--text-strong);
+}
+
+/* Search form area */
+.section-header form .form-select,
+.section-header form .form-control {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--text-strong);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.section-header form .form-select:focus,
+.section-header form .form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 118, 197, 0.12);
+}
+
+.section-header form .btn-secondary {
+    background-color: var(--text-secondary);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+    transition: background var(--transition);
+}
+
+.section-header form .btn-secondary:hover {
+    background-color: #555;
+}
+
+/* === Filter button group (전체 / 유효 / 만료) =============== */
+.content > .d-flex .btn-outline-primary {
+    background: #fff;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 6px 18px;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    margin-right: 6px;
+    white-space: nowrap;
+    transition: all var(--transition);
+}
+
+.content > .d-flex .btn-outline-primary:hover {
+    background: var(--bg-subtle);
+    border-color: var(--border-mid);
+    color: var(--text-primary);
+}
+
+.content > .d-flex .btn-outline-primary.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 2px 6px rgba(74, 118, 197, 0.2);
+}
+
+/* "신규 회원 등록" button */
+#newMemberBtn {
+    background: var(--primary);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: #fff;
+    font-weight: 700;
+    padding: 8px 22px;
+    white-space: nowrap;
+    transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+#newMemberBtn:hover {
+    background: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(74, 118, 197, 0.3);
+}
+
+/* === Members table ========================================= */
+.table-responsive {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: var(--shadow-card) !important;
+    display: flex;
+    flex-direction: column;
+    /* allow internal vertical scroll only as a last-resort fallback;
+     * responsive row padding below should make this rare         */
+    overflow-y: auto !important;
+    overflow-x: auto !important;
+}
+
+.table-responsive > table {
+    flex: 0 0 auto;
+    margin: 0 !important;
+}
+
+.custom-table {
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+    margin-bottom: 0 !important;
+}
+
+/* Sticky table header — always visible while scrolling rows */
+.custom-table thead.table-secondary th {
+    position: sticky;
+    top: 0;
+    z-index: 4;
+    background: var(--bg-subtle) !important;
+    color: var(--text-muted) !important;
+    font-size: clamp(11px, 0.7vw, 13px);
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border) !important;
+    border-top: none !important;
+    /* responsive padding */
+    padding: clamp(8px, 1vh, 14px) 10px !important;
+    box-shadow: inset 0 -1px 0 var(--border);
+}
+
+.custom-table thead.table-secondary tr {
+    background: var(--bg-subtle) !important;
+}
+
+.custom-table tbody tr {
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background var(--transition);
+}
+
+.custom-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.custom-table tbody tr:hover {
+    background: var(--primary-pale) !important;
+    --bs-table-hover-bg: transparent;
+}
+
+.custom-table tbody td {
+    color: var(--text-strong);
+    font-size: clamp(13px, 0.8vw, 15px);
+    font-weight: 500;
+    /* responsive vertical padding so 10 rows fit at most resolutions */
+    padding: clamp(7px, 1vh, 13px) 10px !important;
+    border-top: none !important;
+    vertical-align: middle;
+}
+
+/* Expire badge */
+.expire-badge .badge.bg-danger {
+    background-color: var(--accent-danger) !important;
+    color: #fff;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+}
+
+/* === Pagination (sticky at bottom of table-responsive) =====
+ * IMPORTANT: selector is `div.text-center.mb-2` (not bare
+ * `.text-center.mb-2`) because the JSP's <table> ALSO carries
+ * those classes — the loose selector would match both and
+ * trigger bizarre layout (display:table inherited, etc).
+ *
+ * `position: sticky; bottom: 0` + `margin-top: auto` lets the
+ * pagination pin to the bottom of the visible scroll-port even
+ * on the last page (e.g. when only 3 rows are rendered).
+ * =========================================================== */
+.table-responsive > div.text-center.mb-2 {
+    display: block !important;
+    position: sticky;
+    bottom: 0;
+    z-index: 4;
+    margin-top: auto !important;
+    background: var(--bg-subtle);
+    border-top: 1px solid var(--border);
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    padding: clamp(8px, 1vh, 14px) 12px !important;
+    margin-bottom: 0 !important;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.table-responsive > .text-center a {
+    color: var(--text-secondary) !important;
+    font-weight: 500 !important;
+    transition: color var(--transition);
+}
+
+.table-responsive > .text-center a:hover {
+    color: var(--primary) !important;
+}
+
+/* Active page (rendered as <b><font>) */
+.table-responsive > .text-center a font b {
+    color: var(--primary) !important;
+    font-weight: 800;
+}
+
+/* === Modals (shared) ======================================= */
+.modal-content {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 20px 60px rgba(30, 50, 100, 0.18);
+    font-family: var(--font-sans);
+    color: var(--text-primary);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+}
+
+.modal-header .modal-title {
+    color: var(--text-strong);
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.modal-body {
+    padding: 22px 24px;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border);
+    padding: 16px 24px;
+}
+
+/* Labels in member modals */
+.modal .form-label.fw-bold {
+    color: var(--text-secondary);
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+.modal .form-control,
+.modal .form-select {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    color: var(--text-strong);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.modal .form-control:focus,
+.modal .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 118, 197, 0.12);
+}
+
+.modal .form-control[readonly] {
+    background: var(--bg-subtle);
+    color: var(--text-primary);
+    cursor: default;
+}
+
+/* Modal buttons (scoped) */
+.modal .btn-primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    transition: background var(--transition), transform var(--transition);
+}
+.modal .btn-primary:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.modal .btn-success {
+    background: var(--primary);
+    border-color: var(--primary);
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+}
+.modal .btn-success:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+.modal .btn-secondary,
+.modal .btn-outline-secondary {
+    background: #fff;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+.modal .btn-secondary:hover,
+.modal .btn-outline-secondary:hover {
+    background: var(--bg-subtle);
+    border-color: var(--border-mid);
+    color: var(--text-primary);
+}
+
+.modal .btn-outline-primary {
+    background: #fff;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+}
+.modal .btn-outline-primary:hover {
+    background: var(--primary-pale);
+    color: var(--primary-hover);
+}
+
+/* === View modal field rows (read-only display) ============= */
+.modal #viewCarNumber,
+.modal #viewName,
+.modal #viewPhone,
+.modal #viewStartDate,
+.modal #viewExpireDate {
+    background: var(--bg-subtle) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-sm) !important;
+    padding: 8px 12px !important;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-strong);
+}
+
+/* === Membership-pay modal ================================== */
+#membershipPayModal .modal-header.bg-primary {
+    background: var(--primary) !important;
+    border-bottom: none;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+#membershipPayModal #memPrice {
+    color: var(--primary) !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem;
+    background: var(--primary-pale);
+    border: 1px solid var(--primary);
+}
+
+/* === Membership receipt (on-screen preview) ================ */
+#mem-receipt-section .p-4 {
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-md) !important;
+    background: var(--bg-subtle) !important;
+}
+
+#mem-receipt-section h4 {
+    color: var(--text-strong);
+    font-weight: 800;
+}
+
+#mem-receipt-section hr {
+    border-color: var(--border);
+    opacity: 1;
+}
+
+#mem-receipt-section .text-primary {
+    color: var(--primary) !important;
+}
+
+#mem-receipt-section .text-danger {
+    color: var(--accent-danger) !important;
+    font-weight: 700;
+}

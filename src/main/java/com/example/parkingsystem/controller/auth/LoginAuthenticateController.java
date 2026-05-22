@@ -30,7 +30,7 @@ public class LoginAuthenticateController extends HttpServlet {
             return;
         }
 
-        if (!adminService.AuthenticateAdmin(adminId, password)) {
+        if (!adminService.authenticateAdmin(adminId, password)) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

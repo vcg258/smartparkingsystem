@@ -2,6 +2,7 @@ package com.example.parkingsystem.filter;
 
 
 import com.example.parkingsystem.service.auth.AdminService;
+import com.example.parkingsystem.service.setting.PaymentInfoService;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
@@ -67,6 +68,15 @@ public class AuthFilter implements Filter {
             if (!servletPath.startsWith(mypagePath)) {
                 log.info("비밀번호 재설정후 최초 로그인 이동제한");
                 resp.sendRedirect(contextPath + mypagePath);
+                return;
+            }
+        }
+
+        // 정책이 없으면 setting 페이지 외 모든 접근 차단
+        if (PaymentInfoService.INSTANCE.getInfo() == null) {
+            if (!servletPath.startsWith("/setting")) {
+                log.info("정책 미설정 → setting 페이지로 강제 이동 adminId={}", adminId);
+                resp.sendRedirect(contextPath + "/setting?noPolicy=true");
                 return;
             }
         }

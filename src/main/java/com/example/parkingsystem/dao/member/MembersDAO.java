@@ -245,7 +245,7 @@ public class MembersDAO {
             sql.append(" AND ").append(column).append(" LIKE ? ");
         }
 
-        sql.append(" ORDER BY mno DESC LIMIT ?, ?");
+        sql.append(" ORDER BY CASE WHEN end_date >= CURDATE() THEN 0 ELSE 1 END ASC, end_date DESC, member_name ASC LIMIT ?, ?");
 
         List<MembersVO> membersVOList = new ArrayList<>();
 

@@ -1,17 +1,9 @@
 <%@ page import="com.example.parkingsystem.dto.main.ParkingHistoryDTO" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.parkingsystem.service.main.ParkingHistoryService" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="com.example.parkingsystem.service.member.MembersService" %>
-<%@ page import="com.example.parkingsystem.dao.member.MembersDAO" %>
-<%@ page import="com.example.parkingsystem.dto.member.MembersDTO" %>
-<%@ page import="com.example.parkingsystem.service.setting.PaymentInfoService" %>
-<%@ page import="com.example.parkingsystem.dto.setting.PaymentInfoDTO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    // parking_history 불러오기
-    ParkingHistoryService parkingHistoryService = ParkingHistoryService.INSTANCE;
     List<ParkingHistoryDTO> occupiedList = (List<ParkingHistoryDTO>) request.getAttribute("occupiedList");
 
     Map<String, ParkingHistoryDTO> occupiedMap = new HashMap<>();
@@ -20,12 +12,6 @@
             occupiedMap.put(dto.getParkingArea(), dto);
         }
     }
-
-    // 입차 시간 기준 요금 정책 불러오기
-    PaymentInfoDTO paymentInfo = (PaymentInfoDTO) request.getAttribute("paymentInfoDTO");
-
-    // 회원 목록 불러오기
-//    List<MembersDTO> members = request.getAttribute("")
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -57,7 +43,7 @@
     <div class="section-header d-flex justify-content-between align-items-end">
         <div>
             <h3 class="section-title">주차 현황</h3>
-            <p class="mb-0">현재 <b>6대</b>의 차량이 주차되어 있습니다.</p>
+            <p class="mb-0">현재 <b id="occupiedCountText"><%=occupiedMap.size()%>대</b>의 차량이 주차되어 있습니다.</p>
         </div>
 
         <!-- 차량 검색 창 -->
@@ -208,25 +194,7 @@
 <!-- 검색 모달 JS -->
 <script src="${pageContext.request.contextPath}/web/static/js/main/main_search.js"></script>
 
-<!-- 요금 계산 로직 JS -->
-<script>
-    const policy = {
-        freeTime: <%=paymentInfo != null ? paymentInfo.getFreeTime() : 0%>,
-        basicTime: <%=paymentInfo != null ? paymentInfo.getBasicTime() : 0%>,
-        extraTime: <%=paymentInfo != null ? paymentInfo.getExtraTime() : 0%>,
-        basicCharge: <%=paymentInfo != null ? paymentInfo.getBasicCharge() : 0%>,
-        extraCharge: <%=paymentInfo != null ? paymentInfo.getExtraCharge() : 0%>,
-        smallCarDiscount: <%=paymentInfo != null ? paymentInfo.getSmallCarDiscount() : 0%>,
-        disabledDiscount: <%=paymentInfo != null ? paymentInfo.getDisabledDiscount() : 0%>,
-        maxCharge: <%=paymentInfo != null ? paymentInfo.getMaxCharge() : 0%>
-    }
-</script>
-<script src="${pageContext.request.contextPath}/web/static/js/main/main_parking_charge_logic.js"></script>
-
 <!-- 메인 모달 JS -->
 <script src="${pageContext.request.contextPath}/web/static/js/main/main_modal.js"></script>
-
-<!-- 회원권 결제 모달 JS -->
-<%--<script src="${pageContext.request.contextPath}/web/main/@@main_membershipPay.js"></script>--%>
 </body>
 </html>

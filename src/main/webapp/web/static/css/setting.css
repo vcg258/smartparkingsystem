@@ -1,65 +1,142 @@
+/* ============================================================
+ * setting.css
+ * Fee policy form page (/setting).
+ * Custom layout only — Bootstrap classes untouched.
+ * ============================================================ */
+
+:root {
+    /* === Brand Colors === */
+    --primary:        #4a76c5;
+    --primary-hover:  #3a66b5;
+    --primary-light:  #6a96e8;
+    --primary-pale:   #eef2fb;
+
+    /* === Surface === */
+    --bg-page:    #f5f5f5;
+    --bg-card:    #ffffff;
+    --bg-subtle:  #fafafa;
+
+    /* === Text === */
+    --text-strong:    #1a1a1b;
+    --text-primary:   #333333;
+    --text-secondary: #666666;
+    --text-muted:     #8a93aa;
+
+    /* === Border === */
+    --border:     #dee2e6;
+    --border-mid: #c8cfe0;
+
+    /* === Status / Accent === */
+    --accent-green:    #70AD47;
+    --accent-orange:   #ED7D31;
+    --accent-yellow:   #FFC000;
+    --accent-danger:   #dc3545;
+    --stall-available: #e1e0e0;
+    --stall-occupied:  #bded8f;
+
+    /* === Radius === */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
+
+    /* === Shadow === */
+    --shadow-sm:         0 1px 4px  rgba(30, 50, 100, 0.07);
+    --shadow-card:       0 2px 8px  rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 4px 16px rgba(74, 118, 197, 0.12);
+    --shadow-board:      0 0 15px   rgba(0, 0, 0, 0.10);
+
+    /* === Motion === */
+    --transition: 0.2s ease;
+
+    /* === Typography === */
+    --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+/* === Reset (page-local) ===================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* 기본 폰트 설정 */
+/* === Fit-to-viewport (1920×1080, no scroll) ================ */
+html, body {
+    height: 100vh;
+}
+
 body {
-    /*font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;*/
-    background-color: #f5f5f5;
+    font-family: var(--font-sans);
+    background-color: var(--bg-page);
+    color: var(--text-primary);
     margin: 0;
     padding: 0;
-    color: #333;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-/* 헤더 하단 마진 제거 */
-/*.navbar {*/
-/*    width: 100%;*/
-/*    margin-bottom: 0 !important;*/
-/*    padding-top: 15px !important;*/
-/*    padding-bottom: 15px !important;*/
-/*}*/
+body > .navbar { flex: 0 0 auto; }
+body > footer  { flex: 0 0 auto; }
 
-/* 전체 컨테이너 */
-.container {
-    max-width: 1800px; !important;
-    margin: 0 auto 10px;
-    padding: 0 20px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
-    font-size: 1.1rem;
+/* === Page container (scoped to /setting only) =============== *
+ * Targets the JSP-specific id `#container` so we don't
+ * accidentally redefine Bootstrap `.container`.
+ * =========================================================== */
+.container#container {
+    max-width: 1800px !important;
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px 20px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    font-size: 1.05rem;
 }
 
-/* 타이틀 바 */
+/* === Title bar ============================================== */
 .title-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    grid-column: span 1;
-    background-color: #f5f5f5;
-    padding: 12px 20px 12px 5px;
-    border: 1px solid #f5f5f5;
+    background-color: var(--bg-page);
+    padding: clamp(8px, 1vh, 14px) 20px clamp(8px, 1vh, 14px) 5px;
+    border: 1px solid var(--bg-page);
     font-weight: bold;
-    color: black;
-    font-size: 24px;
-    border-radius: 6px;
+    color: var(--text-strong);
+    font-size: clamp(18px, 1.1vw + 6px, 24px);
+    border-radius: var(--radius-sm);
 }
 
-/* 카드 */
-.card {
-    background: white;
-    border: 2px solid #dee2e6 !important;
-    border-radius: 12px !important;
-    padding: 10px 28px 24px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    transition: border-color 0.2s;
+/* === Form layout (cards naturally fit, no internal scroll) === */
+.setup-area {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(8px, 1.2vh, 16px);
+    min-height: 0;
+    flex: 1 1 auto;
+    overflow: hidden;
 }
 
-.card:hover {
-    border: 2px solid #4a76c5 !important;
+.setup-area > .card {
+    flex: 0 0 auto;
+}
+
+/* === Form section cards (scoped — DOES NOT touch Bootstrap .card globally) === */
+.setup-area .card {
+    background: var(--bg-card);
+    border: 2px solid var(--border) !important;
+    border-radius: var(--radius-lg) !important;
+    padding: clamp(10px, 1.2vh, 18px) clamp(16px, 1.6vw, 28px) clamp(14px, 1.6vh, 22px);
+    margin-bottom: 0;
+    box-shadow: var(--shadow-card);
+    transition: border-color var(--transition);
+}
+
+.setup-area .card:hover {
+    border-color: var(--primary) !important;
 }
 
 .card-label {
@@ -68,10 +145,10 @@ body {
     padding-left: 5px;
     margin-bottom: 10px;
     font-weight: bold;
-    color: #333;
+    color: var(--text-primary);
 }
 
-/* 입력 행 */
+/* === Input row + input item ================================= */
 .input-row {
     display: flex;
     gap: 15px;
@@ -79,17 +156,18 @@ body {
 
 .input-item {
     flex: 1;
-    border: 1px solid #dee2e6;
-    padding: 20px;
-    background: #fafafa;
+    border: 1px solid var(--border);
+    padding: clamp(10px, 1.4vh, 18px) clamp(12px, 1.2vw, 20px);
+    background: var(--bg-subtle);
     text-align: center;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
+    transition: border-color var(--transition);
 }
 
 .input-item label {
     display: block;
     font-size: 15px;
-    color: #666;
+    color: var(--text-secondary);
     margin-bottom: 10px;
     font-weight: bold;
 }
@@ -97,58 +175,60 @@ body {
 .input-item input {
     width: 90%;
     padding: 7px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
     text-align: center;
     font-size: 16px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    transition: border-color 0.2s;
+    font-family: var(--font-sans);
+    color: var(--text-strong);
+    transition: border-color var(--transition), box-shadow var(--transition);
 }
 
 .input-item input:focus {
     outline: none;
-    border-color: #4a76c5;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(74, 118, 197, 0.12);
 }
 
-/* 우측 저장 버튼 영역 */
+/* === Save button area ======================================= */
 .btn-area {
     text-align: right;
     margin-bottom: 15px;
 }
 
 .save-btn {
-    background-color: #4a76c5;
-    color: white;
+    background-color: var(--primary);
+    color: #fff;
     padding: 10px 50px;
     border: none;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
     font-size: 16px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    transition: background-color 0.2s;
+    font-family: var(--font-sans);
+    transition: background-color var(--transition);
 }
 
 .save-btn:hover {
-    background-color: #3a66b5;
+    background-color: var(--primary-hover);
 }
 
-/* 미리보기 박스 */
+/* === Preview box ============================================ */
 .preview-box {
-    background: white;
-    border: 2px solid #4a76c5;
-    border-radius: 12px;
+    background: var(--bg-card);
+    border: 2px solid var(--primary);
+    border-radius: var(--radius-lg);
     padding: 35px;
-    box-shadow: 0 2px 8px rgba(74, 118, 197, 0.1);
+    box-shadow: 0 2px 8px rgba(74, 118, 197, 0.10);
 }
 
 .preview-title {
     font-weight: bold;
     margin-bottom: 20px;
     display: block;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border);
     padding-bottom: 10px;
-    color: #333;
+    color: var(--text-primary);
 }
 
 .preview-row {
@@ -159,13 +239,118 @@ body {
 }
 
 .preview-row b {
-    color: #4a76c5;
+    color: var(--primary);
 }
 
 .update-info {
     margin-top: 30px;
-    color: #4a76c5;
+    color: var(--primary);
     font-weight: bold;
     font-size: 14px;
     line-height: 1.6;
+}
+
+/* === No-policy warning modal =============================== *
+ * Markup (from setting.jsp, NOT editable):
+ *   .modal-content
+ *     .modal-header.bg-warning-subtle.border-bottom-0.pb-0
+ *       .d-flex.align-items-center.gap-2
+ *         span.fs-4 ⚠️
+ *         h5.modal-title.fw-bold
+ *     .modal-body.pt-2.pb-1
+ *       p.text-muted, p (with <strong>)
+ *     .modal-footer.border-top-0.pt-1
+ *       button.btn.btn-primary.px-4
+ *
+ * Redesign goals:
+ *   - replace the loud yellow ring with a clean white card +
+ *     a single coloured "chip" around the ⚠ emoji
+ *   - softer header (cream tint instead of saturated yellow)
+ *   - generous body spacing, button right-aligned with breathing room
+ * =========================================================== */
+#noPolicyModal .modal-dialog {
+    max-width: 460px;
+}
+
+#noPolicyModal .modal-content {
+    border: 1px solid var(--border) !important;
+    border-radius: var(--radius-lg) !important;
+    box-shadow: 0 24px 60px rgba(30, 50, 100, 0.18);
+    background: var(--bg-card);
+    overflow: hidden;
+}
+
+/* Header — tinted cream strip, no harsh yellow ring */
+#noPolicyModal .modal-header.bg-warning-subtle {
+    background: #fff8ec !important;
+    border-bottom: 1px solid #ffe4b0 !important;
+    padding: 18px 24px !important;
+    border-radius: 0 !important;
+}
+
+/* The ⚠️ emoji span — turn into a circular chip */
+#noPolicyModal .modal-header span.fs-4 {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--accent-yellow);
+    box-shadow: 0 4px 10px rgba(255, 192, 0, 0.35);
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    flex-shrink: 0;
+    margin-right: 4px;
+}
+
+#noPolicyModal .modal-title {
+    color: var(--text-strong);
+    font-weight: 800 !important;
+    font-size: 17px;
+    letter-spacing: -0.01em;
+}
+
+/* Body */
+#noPolicyModal .modal-body {
+    padding: 20px 24px 8px !important;
+    color: var(--text-primary);
+    font-size: 14.5px;
+    line-height: 1.65;
+}
+
+#noPolicyModal .modal-body p.text-muted {
+    color: var(--text-secondary) !important;
+    font-size: 13.5px !important;
+    margin-bottom: 12px !important;
+}
+
+#noPolicyModal .modal-body strong {
+    color: var(--text-strong);
+    font-weight: 700;
+}
+
+/* Footer — flat, no border, comfortable button */
+#noPolicyModal .modal-footer {
+    border-top: none !important;
+    padding: 8px 24px 22px !important;
+    justify-content: flex-end !important;
+}
+
+#noPolicyModal .modal-footer .btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+    font-weight: 700;
+    padding: 10px 22px !important;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 2px 6px rgba(74, 118, 197, 0.2);
+    transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+#noPolicyModal .modal-footer .btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(74, 118, 197, 0.3);
 }

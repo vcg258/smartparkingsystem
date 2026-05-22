@@ -21,9 +21,23 @@ public class ParkingExitController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json;charset=UTF-8");
 
-        long parkNo = Long.parseLong(req.getParameter("parkNo"));
-        log.info("출차 확정 요청 parkNo={}", parkNo);
+        String parkNoStr = req.getParameter("parkNo");
+        if (parkNoStr == null || parkNoStr.isBlank()) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write("{\"success\": false, \"message\": \"parkNo가 필요합니다\"}");
+            return;
+        }
 
+        long parkNo;
+        try {
+            parkNo = Long.parseLong(parkNoStr);
+        } catch (NumberFormatException e) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            resp.getWriter().write("{\"success\": false, \"message\": \"parkNo 형식이 올바르지 않습니다\"}");
+            return;
+        }
+
+        log.info("출차 확정 요청 parkNo={}", parkNo);
         ParkingHistoryDTO parkingHistoryDTO = ParkingHistoryDTO.builder().parkNo(parkNo).build();
         parkingService.registerExit(parkingHistoryDTO);
         log.info("출차 확정 완료 parkNo={}", parkNo);

@@ -44,7 +44,7 @@
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/web/static/css/mainboard.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/web/static/css/member.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/web/static/css/membership_receipt.css">
 
     <script src="${pageContext.request.contextPath}/web/static/js/member/member.js" defer></script>

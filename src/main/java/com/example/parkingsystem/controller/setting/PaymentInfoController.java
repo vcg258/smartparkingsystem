@@ -22,9 +22,14 @@ public class PaymentInfoController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PaymentInfoDTO paymentInfoDTO = paymentInfoService.getInfo();
-//        log.info(paymentInfoDTO);
 
         req.setAttribute("paymentInfoDTO", paymentInfoDTO);
+
+        // 로그인 후 정책 없어서 리다이렉트된 경우 JSP에 noPolicy 플래그 전달
+        String noPolicy = req.getParameter("noPolicy");
+        if ("true".equals(noPolicy) && paymentInfoDTO == null) {
+            req.setAttribute("noPolicy", true);
+        }
 
         req.getRequestDispatcher("/WEB-INF/setting/setting.jsp").forward(req, resp);
     }
@@ -64,14 +69,8 @@ public class PaymentInfoController extends HttpServlet {
                 .build();
         log.info("DTO add {}", paymentInfoDTO);
 
-        // 정책이 DB에 하나도 없을때 널포인트 방지 (비지니스 로직 접근 제어)
-        if (paymentInfoService.getInfo() == null) {
-            log.info("정책 없음 강제 플로우 구현 예정");
-//            return;
-        }
         paymentInfoService.addInfo(paymentInfoDTO);
         resp.setStatus(HttpServletResponse.SC_OK);
-
         resp.sendRedirect(req.getContextPath() + "/setting");
     }
 }

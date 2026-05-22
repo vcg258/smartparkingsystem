@@ -2,6 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     PaymentInfoDTO paymentInfoDTO = (PaymentInfoDTO) request.getAttribute("paymentInfoDTO");
+    Boolean noPolicy = (Boolean) request.getAttribute("noPolicy");
+    if (noPolicy == null) noPolicy = false;
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -12,7 +14,15 @@
     <title>스마트 주차 관리 시스템 - 설정</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<%=request.getContextPath()%>/web/static/css/setting.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="<%=request.getContextPath()%>/web/static/js/setting/setting.js"></script>
+    <% if (noPolicy) { %>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            showNoPolicyModal();
+        });
+    </script>
+    <% } %>
 </head>
 <body>
 <%@include file="/WEB-INF/common/header_main.jsp"%>
@@ -87,5 +97,32 @@
 <footer>
     <%@ include file="/WEB-INF/common/footer.jsp" %>
 </footer>
+
+<!-- 정책 미설정 안내 모달 -->
+<div class="modal fade" id="noPolicyModal" tabindex="-1" aria-labelledby="noPolicyModalLabel" aria-hidden="true"
+     data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-warning-subtle border-bottom-0 pb-0">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="fs-4">⚠️</span>
+                    <h5 class="modal-title fw-bold" id="noPolicyModalLabel">요금 정책 미설정 안내</h5>
+                </div>
+            </div>
+            <div class="modal-body pt-2 pb-1">
+                <p class="text-muted mb-2">현재 등록된 요금 및 할인 정책이 없습니다.</p>
+                <p class="mb-0">주차 요금 계산 및 시스템 운영을 위해<br>
+                    <strong>아래 양식을 작성하고 저장하기</strong>를 눌러주세요.
+                </p>
+            </div>
+            <div class="modal-footer border-top-0 pt-1">
+                <button type="button" class="btn btn-primary px-4" data-bs-dismiss="modal">
+                    확인 후 설정하기
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

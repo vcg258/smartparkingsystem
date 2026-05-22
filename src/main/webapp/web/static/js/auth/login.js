@@ -208,6 +208,10 @@ function submitStep3(event) {
                 clearInterval(timerInterval);
                 alert("[OTP Success] 인증 완료")
                 window.location.href = CONTEXT_PATH + "/main";
+            } else if (res.status === 202) {
+                clearInterval(timerInterval);
+                alert("[OTP Success] 인증 완료")
+                window.location.href = CONTEXT_PATH + "/setting?noPolicy=true";
             } else if (res.status === 401) {
                 alert("[OTP Fail] \n 인증번호가 일치 하지 않습니다.")
             } else if (res.status === 403) {

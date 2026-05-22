@@ -3,6 +3,7 @@ package com.example.parkingsystem.controller.auth;
 
 import com.example.parkingsystem.dto.auth.AdminDTO;
 import com.example.parkingsystem.service.auth.AdminService;
+import com.example.parkingsystem.service.setting.PaymentInfoService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
@@ -14,6 +15,7 @@ import java.io.IOException;
 @WebServlet("/login")
 public class LoginProcessController extends HttpServlet {
     private final AdminService adminService = AdminService.INSTANCE;
+    private final PaymentInfoService paymentInfoService = PaymentInfoService.INSTANCE;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,7 +31,12 @@ public class LoginProcessController extends HttpServlet {
                         log.info("자동 로그인 성공 adminId={}", adminDTO.getAdminId());
                         HttpSession session = req.getSession();
                         session.setAttribute("adminId", adminDTO.getAdminId());
-                        resp.sendRedirect(req.getContextPath() + "/main");
+                        if (paymentInfoService.getInfo() == null) {
+                            log.info("자동 로그인 후 정책 없음 → setting 페이지로 리다이렉트 adminId={}", adminDTO.getAdminId());
+                            resp.sendRedirect(req.getContextPath() + "/setting?noPolicy=true");
+                        } else {
+                            resp.sendRedirect(req.getContextPath() + "/main");
+                        }
                         return;
                     }
                 }

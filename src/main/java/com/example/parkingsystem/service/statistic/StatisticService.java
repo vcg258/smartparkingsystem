@@ -238,11 +238,14 @@ public enum StatisticService {
 
     // 회원권 매출을 회원권 시작 월 기준으로 합산
     // 결제 이력이 아니라 members 테이블의 memberCharge 사용
+    // 오늘 이후 시작하는 회원권은 아직 결제 전이므로 제외
     private Map<Integer, Integer> membershipRevenueByMonth(int year) {
         Map<Integer, Integer> result = new HashMap<>();
+        LocalDate today = LocalDate.now();
         for (MembersVO member : membersDAO.selectAllMembers()) {
-            if (member.getStartDate().getYear() == year) {
-                int month = member.getStartDate().getMonthValue();
+            LocalDate startDate = member.getStartDate();
+            if (startDate.getYear() == year && !startDate.isAfter(today)) {
+                int month = startDate.getMonthValue();
                 result.put(month, result.getOrDefault(month, 0) + calculateMembershipRevenue(member));
             }
         }
@@ -250,10 +253,13 @@ public enum StatisticService {
     }
 
     // 특정 월의 회원권 매출을 시작일 기준 일자 배열에 더함
+    // 오늘 이후 시작하는 회원권은 제외
     private void fillDailyMembershipRevenue(int year, int month, int[] dailyMember) {
+        LocalDate today = LocalDate.now();
         for (MembersVO member : membersDAO.selectAllMembers()) {
             LocalDate startDate = member.getStartDate();
-            if (startDate.getYear() == year && startDate.getMonthValue() == month) {
+            if (startDate.getYear() == year && startDate.getMonthValue() == month
+                    && !startDate.isAfter(today)) {
                 dailyMember[startDate.getDayOfMonth() - 1] += calculateMembershipRevenue(member);
             }
         }

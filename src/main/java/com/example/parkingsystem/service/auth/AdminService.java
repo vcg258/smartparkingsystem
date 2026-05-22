@@ -38,7 +38,7 @@ public enum AdminService {
     }
 
     // 로그인 인증 (활동여부 사용중 True, 사용중지 False)
-    public boolean AuthenticateAdmin(String adminId, String password) {
+    public boolean authenticateAdmin(String adminId, String password) {
         AdminDTO admin = getAdminById(adminId);
         return admin != null && BCrypt.checkpw(password, admin.getPassword());
     }

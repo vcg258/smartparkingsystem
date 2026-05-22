@@ -1,85 +1,146 @@
-/* CSS 변수 */
+/* ============================================================
+ * statistic.css
+ * Statistics page (/statistic) — Highcharts container,
+ * filter row, summary cards, and Today rail.
+ * ============================================================ */
+
 :root {
-    --primary:       #4472C4;
-    --primary-light: #6a96e8;
-    --primary-pale:  #eef2fb;
-    --accent-green:  #70AD47;
-    --accent-orange: #ED7D31;
-    --accent-yellow: #FFC000;
+    /* === Brand Colors === */
+    --primary:        #4a76c5;
+    --primary-hover:  #3a66b5;
+    --primary-light:  #6a96e8;
+    --primary-pale:   #eef2fb;
 
-    --bg-page:   #f0f2f7;
-    --bg-card:   #ffffff;
-    --bg-subtle: #f8f9fc;
+    /* === Surface === */
+    --bg-page:    #f5f5f5;
+    --bg-card:    #ffffff;
+    --bg-subtle:  #fafafa;
 
-    --border:     #e2e6f0;
+    /* === Text === */
+    --text-strong:    #1a1a1b;
+    --text-primary:   #333333;
+    --text-secondary: #666666;
+    --text-muted:     #8a93aa;
+
+    /* === Border === */
+    --border:     #dee2e6;
     --border-mid: #c8cfe0;
 
-    --text-dark:  #1a2340;
-    --text-mid:   #4a5470;
-    --text-light: #8a93aa;
-    --text-hint:  #b0b8cc;
+    /* === Status / Accent === */
+    --accent-green:    #70AD47;
+    --accent-orange:   #ED7D31;
+    --accent-yellow:   #FFC000;
+    --accent-danger:   #dc3545;
+    --stall-available: #e1e0e0;
+    --stall-occupied:  #bded8f;
 
-    --shadow-sm: 0 1px 4px rgba(30, 50, 100, 0.07);
-    --shadow-md: 0 4px 16px rgba(30, 50, 100, 0.10);
-
+    /* === Radius === */
     --radius-sm: 6px;
-    --radius-md: 10px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
+
+    /* === Shadow === */
+    --shadow-sm:         0 1px 4px  rgba(30, 50, 100, 0.07);
+    --shadow-card:       0 2px 8px  rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 4px 16px rgba(74, 118, 197, 0.12);
+    --shadow-board:      0 0 15px   rgba(0, 0, 0, 0.10);
+
+    /* === Motion === */
     --transition: 0.2s ease;
+
+    /* === Typography === */
+    --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
-/* 기본 리셋 */
+/* === Reset (page-local) ===================================== */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-body {
-    font-family: 'Segoe UI', 'Apple SD Gothic Neo', Tahoma, sans-serif;
-    background-color: var(--bg-page);
-    color: var(--text-dark);
+/* === Fit-to-viewport (1920×1080, no scroll) ================ */
+html, body {
+    height: 100vh;
 }
 
-/* 전체 레이아웃 - 왼쪽(필터+차트+요약) / 오른쪽(일일현황) */
+body {
+    font-family: var(--font-sans);
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+body > .navbar { flex: 0 0 auto; }
+body > footer  { flex: 0 0 auto; }
+
+/* === Page grid ============================================== */
 .content {
     display: grid;
-    grid-template-columns: 1fr 280px;
+    grid-template-columns: 1fr 300px;
     grid-template-rows: auto 1fr auto;
-    padding: 24px;
-    gap: 16px;
+    padding: 16px 20px;
+    gap: 14px;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
 }
 
-/* 필터 영역 */
+/* === Filter bar ============================================= */
 .filter-container {
     grid-column: 1;
     grid-row: 1;
-    background: var(--bg-subtle);
+    background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
     padding: 14px 18px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     gap: 10px;
+    transition: border-color var(--transition);
 }
 
-/* 차트 영역 */
+.filter-container:hover {
+    border-color: var(--primary);
+}
+
+/* === Chart container ======================================== */
 #chart_container {
     grid-column: 1;
     grid-row: 2;
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    min-height: 360px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    /* override inline min-height: 400px on the JSP so it can shrink */
+    min-height: 0 !important;
     overflow: hidden;
+    transition: border-color var(--transition);
 }
 
-/* 통계 요약 카드 영역 */
+#chart_container:hover {
+    border-color: var(--primary);
+}
+
+/* === Summary cards (statistic block) ======================== */
 #summarySection {
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
     padding: 16px 20px;
+    transition: border-color var(--transition);
+}
+
+#summarySection:hover {
+    border-color: var(--primary);
 }
 
 #summarySection .statistic-title {
-    color: var(--text-light);
+    color: var(--text-muted);
     border-bottom-color: var(--border);
     margin-bottom: 12px;
 }
@@ -94,35 +155,39 @@ body {
     flex: 1;
     background: var(--bg-subtle);
     border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     padding: 12px 16px;
-    transition: box-shadow var(--transition);
+    transition: box-shadow var(--transition), border-color var(--transition);
 }
 
-.summary-card:hover { box-shadow: var(--shadow-sm); }
+.summary-card:hover {
+    box-shadow: var(--shadow-sm);
+    border-color: var(--border-mid);
+}
 
 .summary-label {
     font-size: 12px;
     font-weight: 600;
-    color: var(--text-light);
+    color: var(--text-muted);
     letter-spacing: 0.04em;
     text-transform: uppercase;
     margin-bottom: 6px;
 }
 
 .summary-value {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 700;
     margin-bottom: 3px;
     line-height: 1.2;
+    color: var(--text-strong);
 }
 
 .summary-sub {
     font-size: 11px;
-    color: var(--text-hint);
+    color: var(--text-muted);
 }
 
-/* 일일 현황 - 오른쪽 전체 높이 */
+/* === Today rail (right column) ============================== */
 .info-box2 {
     grid-column: 2;
     grid-row: 1 / 4;
@@ -130,8 +195,14 @@ body {
     flex-direction: column;
     background: var(--bg-card);
     border: 1px solid var(--border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
     overflow: hidden;
+    transition: border-color var(--transition);
+}
+
+.info-box2:hover {
+    border-color: var(--primary);
 }
 
 .info-box2 .statistic-title {
@@ -139,7 +210,7 @@ body {
     border-bottom: 1px solid var(--border);
     background: var(--bg-subtle);
     font-size: 13px;
-    color: var(--text-mid);
+    color: var(--text-secondary);
     margin-bottom: 0;
 }
 
@@ -155,10 +226,10 @@ body {
     background: var(--bg-subtle);
     border: 1px solid var(--border);
     border-left: 3px solid var(--primary);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     padding: 14px 16px;
     font-size: 13px;
-    color: var(--text-mid);
+    color: var(--text-secondary);
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -170,14 +241,14 @@ body {
 .summary-box span {
     font-size: 20px;
     font-weight: 700;
-    color: var(--text-dark);
+    color: var(--text-strong);
 }
 
-/* 섹션 타이틀 */
+/* === Section / statistic titles ============================= */
 .section-title {
     font-size: 28px;
     font-weight: 800;
-    color: #1a1a1b;
+    color: var(--text-strong);
     margin-bottom: 8px;
     display: block;
 }
@@ -185,7 +256,7 @@ body {
 .statistic-title {
     font-size: 12px;
     font-weight: 700;
-    color: var(--text-light);
+    color: var(--text-muted);
     letter-spacing: 0.07em;
     text-transform: uppercase;
     padding-bottom: 10px;
@@ -193,7 +264,7 @@ body {
     margin-bottom: 0;
 }
 
-/* 필터 내부 요소 */
+/* === Filter row internals =================================== */
 .filter-row {
     display: flex;
     align-items: center;
@@ -202,12 +273,16 @@ body {
 }
 
 .filter-row:first-child { width: 100%; }
-.filter-row:first-child > .section-title { margin-right: auto; margin-bottom: 0; }
+
+.filter-row:first-child > .section-title {
+    margin-right: auto;
+    margin-bottom: 0;
+}
 
 .filter-row > label:first-child {
     font-size: 12px;
     font-weight: 700;
-    color: var(--text-light);
+    color: var(--text-muted);
     letter-spacing: 0.05em;
     text-transform: uppercase;
     min-width: 60px;
@@ -218,7 +293,7 @@ body {
     border: 1px solid var(--border-mid);
     border-radius: var(--radius-sm);
     background: var(--bg-card);
-    color: var(--text-dark);
+    color: var(--text-strong);
     font-size: 13px;
     cursor: pointer;
     outline: none;
@@ -232,7 +307,7 @@ body {
 .filter-row select:focus,
 .filter-row select:hover {
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(68,114,196,0.12);
+    box-shadow: 0 0 0 3px rgba(74, 118, 197, 0.12);
 }
 
 #membershipLabel {
@@ -240,7 +315,7 @@ body {
     align-items: center;
     gap: 6px;
     font-size: 13px;
-    color: var(--text-mid);
+    color: var(--text-secondary);
     cursor: pointer;
     padding: 5px 10px;
     border: 1px solid var(--border-mid);
@@ -262,9 +337,13 @@ body {
     cursor: pointer;
 }
 
-/* 조회 버튼 */
+/* === Search / primary button (scoped to ID) ================ *
+ * Note: we deliberately do NOT redefine Bootstrap `.btn-primary`
+ * globally; the rule below applies only to the search button
+ * AND to .btn-primary elements *inside* the filter container.
+ * =========================================================== */
 #searchBtn,
-.btn-primary {
+.filter-container .btn-primary {
     padding: 6px 18px;
     background: var(--primary);
     color: #fff;
@@ -278,19 +357,21 @@ body {
 }
 
 #searchBtn:hover,
-.btn-primary:hover {
-    background: var(--primary-light);
-    box-shadow: 0 4px 12px rgba(68,114,196,0.3);
+.filter-container .btn-primary:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 4px 12px rgba(74, 118, 197, 0.30);
     transform: translateY(-1px);
 }
 
 #searchBtn:active,
-.btn-primary:active { transform: translateY(0); }
+.filter-container .btn-primary:active {
+    transform: translateY(0);
+}
 
-/* 로딩 스피너 */
+/* === Loading spinner colour ================================ */
 .spinner-border { color: var(--primary) !important; }
 
-/* 에러 알림 */
+/* === Inline warning alert =================================== */
 .alert-warning {
     background: #fff8ec;
     border: 1px solid #ffe4b0;

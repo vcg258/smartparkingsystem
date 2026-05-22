@@ -2,10 +2,8 @@ package com.example.parkingsystem.controller.main;
 
 import com.example.parkingsystem.dto.main.ParkingHistoryDTO;
 import com.example.parkingsystem.dto.payment.PaymentHistoryDTO;
-import com.example.parkingsystem.dto.setting.PaymentInfoDTO;
 import com.example.parkingsystem.service.main.ParkingHistoryService;
 import com.example.parkingsystem.service.payment.PaymentHistoryService;
-import com.example.parkingsystem.service.setting.PaymentInfoService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,9 +18,8 @@ import java.io.IOException;
 public class ParkingPaymentController extends HttpServlet {
     private final ParkingHistoryService parkingService = ParkingHistoryService.INSTANCE;
     private final PaymentHistoryService paymentHistoryService = PaymentHistoryService.INSTANCE;
-    private final PaymentInfoService paymentInfoService = PaymentInfoService.INSTANCE;
 
-    // 출차 전 결제 이력을 생성하고 정산 화면용 데이터를 반환
+    // 정산완료 클릭 시 DB insert 후 영수증 데이터 반환
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json;charset=UTF-8");
@@ -46,12 +43,11 @@ public class ParkingPaymentController extends HttpServlet {
         }
 
         String carNum = parkingHistoryDTO.getCarNum();
-        paymentHistoryService.calculateFinalCharge(carNum);
 
-        PaymentHistoryDTO paymentHistoryDTO = paymentHistoryService.getRecentPayment(carNum);
-        PaymentInfoDTO paymentInfoDTO = paymentInfoService.getInfo();
-        if (paymentHistoryDTO == null) {
-            log.error("주차 결제 생성 실패: 결제 이력 조회 실패 carNum={}", carNum);
+        // calculateFinalCharge()가 계산 + insert + 결과 반환을 한 번에 처리
+        PaymentHistoryDTO result = paymentHistoryService.calculateFinalCharge(carNum);
+        if (result == null) {
+            log.error("주차 결제 생성 실패: 요금 계산 실패 carNum={}", carNum);
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().write("{\"success\": false, \"message\": \"결제 정보 조회 실패\"}");
             return;
@@ -60,14 +56,15 @@ public class ParkingPaymentController extends HttpServlet {
 
         resp.getWriter().write(
                 "{\"success\": true" +
-                        ", \"carNum\": \"" + carNum + "\"" +
-                        ", \"entryTime\": \"" + paymentHistoryDTO.getEntryTime() + "\"" +
-                        ", \"exitTime\": \"" + paymentHistoryDTO.getExitTime() + "\"" +
-                        ", \"totalMinutes\": \"" + paymentHistoryDTO.getTotalMinutes() + "\"" +
-                        ", \"basicCharge\": \"" + paymentInfoDTO.getBasicCharge() + "\"" +
-                        ", \"extraCharge\": \"" + (paymentHistoryDTO.getTotalCharge() - paymentInfoDTO.getBasicCharge()) + "\"" +
-                        ", \"discountAmount\": \"" + paymentHistoryDTO.getDiscountAmount() + "\"" +
-                        ", \"totalCharge\": " + paymentHistoryDTO.getTotalCharge() + "}"
+                        ", \"carNum\": \""       + carNum                    + "\"" +
+                        ", \"entryTime\": \""    + result.getEntryTime()     + "\"" +
+                        ", \"exitTime\": \""     + result.getExitTime()      + "\"" +
+                        ", \"totalMinutes\": "   + result.getTotalMinutes()  +
+                        ", \"baseCharge\": "     + result.getBaseCharge()    +
+                        ", \"extraCharge\": "    + result.getExtraCharge()   +
+                        ", \"discountAmount\": " + result.getDiscountAmount()+
+                        ", \"discountName\": \"" + result.getDiscountName()  + "\"" +
+                        ", \"finalCharge\": "    + result.getFinalCharge()   + "}"
         );
     }
 }

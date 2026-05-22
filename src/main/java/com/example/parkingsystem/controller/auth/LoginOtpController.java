@@ -4,6 +4,7 @@ import com.example.parkingsystem.dto.auth.AdminDTO;
 import com.example.parkingsystem.dto.auth.ValidationDTO;
 import com.example.parkingsystem.service.auth.AdminService;
 import com.example.parkingsystem.service.auth.ValidationService;
+import com.example.parkingsystem.service.setting.PaymentInfoService;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 public class LoginOtpController extends HttpServlet {
     private final AdminService adminService = AdminService.INSTANCE;
     private final ValidationService validationService = ValidationService.INSTANCE;
+    private final PaymentInfoService paymentInfoService = PaymentInfoService.INSTANCE;
 
     // OTP 인증이 끝나면 임시 세션을 실제 로그인 세션으로 전환
     @Override
@@ -62,6 +64,7 @@ public class LoginOtpController extends HttpServlet {
     }
 
     // 비밀번호 재설정 대상 계정은 메인 대신 마이페이지로 바로 이동
+    // 정책이 없는 경우 202로 응답 → JS에서 setting 페이지로 이동
     private void completeLogin(HttpServletRequest req, HttpServletResponse resp, HttpSession session, String adminId)
             throws IOException {
         session.setAttribute("adminId", adminId);
@@ -74,7 +77,14 @@ public class LoginOtpController extends HttpServlet {
             return;
         }
 
-        resp.setStatus(HttpServletResponse.SC_OK);
+        // 정책이 없으면 202 반환 → JS에서 /setting?noPolicy=true 로 이동
+        if (paymentInfoService.getInfo() == null) {
+            log.info("로그인 후 정책 없음, setting 페이지로 리다이렉트 adminId={}", adminId);
+            resp.setStatus(HttpServletResponse.SC_ACCEPTED); // 202
+            return;
+        }
+
+        resp.setStatus(HttpServletResponse.SC_OK); // 200
     }
 
     private String validateOtp(String adminId, String otpCode) {

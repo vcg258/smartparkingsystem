@@ -24,6 +24,9 @@ public class PaymentHistoryDTO {
     private long pno; // 요금 정책 번호
     private long parkNo; // 주차 기록 번호
     private int discountAmount; // 할인 금액
+    private String discountName; // 할인 내역 명칭
+    private int baseCharge;    // 영수증용 기본요금
+    private int extraCharge;   // 영수증용 추가요금
     private int finalCharge; // 결제 요금
     private boolean isPaid; // 결제 여부
     private LocalDateTime paymentTime; // 결제 시간

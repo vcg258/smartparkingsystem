@@ -1,6 +1,15 @@
 // 콤마를 적용할 대상 ID들 리스트
 const moneyIds = ['in-base-fee', 'in-day-max-fee', 'in-add-fee', 'in-monthly-fee'];
 
+// 정책 미설정 안내 모달 표시 (로그인 후 정책이 없을 때 호출)
+function showNoPolicyModal() {
+    const modalEl = document.getElementById('noPolicyModal');
+    if (modalEl) {
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+    }
+}
+
 // 1. 숫자에 콤마를 추가하는 함수
 function formatNumber(e) {
     let value = e.target.value.replace(/[^\d]/g, ""); // 숫자 외 제거

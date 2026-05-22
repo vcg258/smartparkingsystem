@@ -1,3 +1,61 @@
+/* ============================================================
+ * receipt.css
+ * @media print stylesheet for the exit receipt
+ * rendered inside #parkingModal -> #section-receipt.
+ *
+ * Print-only — :root tokens kept identical for consistency but
+ * the rules below override colours to pure black for printing.
+ * ============================================================ */
+
+:root {
+    /* === Brand Colors === */
+    --primary:        #4a76c5;
+    --primary-hover:  #3a66b5;
+    --primary-light:  #6a96e8;
+    --primary-pale:   #eef2fb;
+
+    /* === Surface === */
+    --bg-page:    #f5f5f5;
+    --bg-card:    #ffffff;
+    --bg-subtle:  #fafafa;
+
+    /* === Text === */
+    --text-strong:    #1a1a1b;
+    --text-primary:   #333333;
+    --text-secondary: #666666;
+    --text-muted:     #8a93aa;
+
+    /* === Border === */
+    --border:     #dee2e6;
+    --border-mid: #c8cfe0;
+
+    /* === Status / Accent === */
+    --accent-green:    #70AD47;
+    --accent-orange:   #ED7D31;
+    --accent-yellow:   #FFC000;
+    --accent-danger:   #dc3545;
+    --stall-available: #e1e0e0;
+    --stall-occupied:  #bded8f;
+
+    /* === Radius === */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 20px;
+
+    /* === Shadow === */
+    --shadow-sm:         0 1px 4px  rgba(30, 50, 100, 0.07);
+    --shadow-card:       0 2px 8px  rgba(0, 0, 0, 0.06);
+    --shadow-card-hover: 0 4px 16px rgba(74, 118, 197, 0.12);
+    --shadow-board:      0 0 15px   rgba(0, 0, 0, 0.10);
+
+    /* === Motion === */
+    --transition: 0.2s ease;
+
+    /* === Typography === */
+    --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
 @media print {
     @page { margin: 10mm; }
 
@@ -5,8 +63,10 @@
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
         background: #fff !important;
+        font-family: var(--font-sans) !important;
     }
 
+    /* Hide everything by default */
     body > * { display: none !important; }
     #modal-id,
     .modal-header,
@@ -14,7 +74,7 @@
         display: none !important;
     }
 
-    /* 출력 대상 */
+    /* Show only the parking modal as the print root */
     #parkingModal {
         display: block !important;
         position: absolute !important;
@@ -24,24 +84,30 @@
         visibility: visible !important;
     }
 
-    /* 모달 내부의 영수증 섹션 및 하위 요소 강제 표시 */
-    .modal-dialog, .modal-content, .modal-body,
-    #section-receipt, #section-receipt *,
-    #receipt-print-area, #receipt-print-area * {
+    /* Re-show receipt sub-tree */
+    .modal-dialog,
+    .modal-content,
+    .modal-body,
+    #section-receipt,
+    #section-receipt *,
+    #receipt-print-area,
+    #receipt-print-area * {
         display: block !important;
         visibility: visible !important;
         border: none !important;
         box-shadow: none !important;
     }
 
-    /* 레이아웃 복구 (영수증 내부 정렬용) */
+    /* Layout recovery for inline rows in print */
     .d-flex { display: flex !important; }
     .justify-content-between { justify-content: space-between !important; }
     .fw-bold { font-weight: bold !important; }
-    .text-primary { color: #0d6efd !important; }
-    .text-danger { color: #dc3545 !important; }
 
-    /* [핵심] 출력 시 버튼, 헤더, 푸터 절대 숨김 */
+    /* Brand tints — keep visible but print-friendly */
+    .text-primary { color: var(--primary) !important; }
+    .text-danger  { color: var(--accent-danger) !important; }
+
+    /* Force-hide all chrome (header, footer, buttons) */
     .modal-header,
     .modal-footer,
     .btn,
@@ -53,7 +119,7 @@
         margin: 0 !important;
     }
 
-    /* 출력용 영수증 내부 텍스트 배치 */
+    /* Receipt-internal flex layout */
     #receipt-print-area .d-flex {
         display: flex !important;
         flex-direction: row !important;
@@ -65,18 +131,23 @@
         flex-direction: column !important;
     }
 
-    /* 출력용 영수증 박스 보정 */
-    #receipt-print-area, .p-4.border {
+    /* Receipt frame — explicit border for print */
+    #receipt-print-area,
+    .p-4.border {
         width: 95% !important;
         max-width: 500px !important;
         margin: 0 auto !important;
-        border: 2px solid #000 !important; /* 출력 시에는 명확한 실선 */
+        border: 2px solid #000 !important;
+        border-radius: var(--radius-md) !important;
         padding: 30px !important;
+        font-family: var(--font-sans) !important;
+        color: #000;
     }
 
-    /* 영수증 내 hr 실선 복구 */
+    /* hr divider for print */
     hr {
         display: block !important;
+        border: 0 !important;
         border-top: 1px solid #000 !important;
         opacity: 1 !important;
         margin: 15px 0 !important;
