@@ -12,19 +12,21 @@
         </button>
 
         <div class="collapse navbar-collapse" id="mainNavbar">
-            <ul class="navbar-nav me-auto">
+            <!-- 왼쪽 메뉴 -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/main">대시보드</a></li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member_list">회원 관리</a></li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/setting">설정 관리</a></li>
                 <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/statistic">통계</a></li>
             </ul>
 
-            <ul class="navbar-nav d-flex flex-row gap-3 p-0 m-0" style="align-items: center;">
+            <!-- 오른쪽 메뉴 (collapse 안에 포함) -->
+            <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a href="${pageContext.request.contextPath}/main/mypage" class="text-white text-decoration-none nav-link">MyPage</a>
+                    <a href="${pageContext.request.contextPath}/main/mypage" class="nav-link text-white">MyPage</a>
                 </li>
                 <li class="nav-item">
-                    <a href="${pageContext.request.contextPath}/logout" class="text-white text-decoration-none nav-link" onclick="return logout()">로그아웃</a>
+                    <a href="${pageContext.request.contextPath}/logout" class="nav-link text-white" onclick="return logout()">로그아웃</a>
                 </li>
             </ul>
         </div>

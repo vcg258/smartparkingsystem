@@ -334,3 +334,18 @@ body > .container-fluid {
     vertical-align: middle;
     font-family: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
 }
+
+/* === 해상도별 자동 축소 (zoom) ============================
+ * 스크롤 없이 뷰포트에 맞게 전체 페이지를 축소
+ * ========================================================= */
+@media (max-height: 900px) and (min-height: 769px) {
+    html { zoom: 0.9; }
+}
+
+@media (max-height: 768px) and (min-height: 721px) {
+    html { zoom: 0.82; }
+}
+
+@media (max-height: 720px) {
+    html { zoom: 0.75; }
+}
