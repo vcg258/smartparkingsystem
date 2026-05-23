@@ -23,8 +23,6 @@ services:
       - 80:8080
     environment:
       DB_HOST: mariadb
-    volumes:
-      - /root/smartparkingsystem/mail.properties:/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/mail.properties
     depends_on:
       - mariadb
     restart: always
