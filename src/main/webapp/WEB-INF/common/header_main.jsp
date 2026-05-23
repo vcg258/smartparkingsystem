@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!-- Bootstrap JS (햄버거 메뉴 동작에 필요) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3" style="font-family: 'Pretendard', sans-serif;">
     <div class="container-fluid">
         <a class="navbar-brand" href="${pageContext.request.contextPath}/main"><b>스마트 주차 관리 시스템</b></a>

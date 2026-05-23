@@ -8,6 +8,7 @@
     <link rel="stylesheet" as="style" crossorigin
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/web/static/css/statistic.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Highcharts 라이브러리 -->
     <script src="${pageContext.request.contextPath}/web/static/js/highchart/highcharts.js"></script>
