@@ -79,10 +79,7 @@ body {
 body > .navbar { flex: 0 0 auto; }
 body > footer  { flex: 0 0 auto; }
 
-/* === Page container (scoped to /setting only) =============== *
- * Targets the JSP-specific id `#container` so we don't
- * accidentally redefine Bootstrap `.container`.
- * =========================================================== */
+/* === Page container (scoped to /setting only) =============== */
 .container#container {
     max-width: 1800px !important;
     width: 100%;
@@ -94,6 +91,25 @@ body > footer  { flex: 0 0 auto; }
     display: flex;
     flex-direction: column;
     font-size: 1.05rem;
+}
+
+/* === 해상도별 자동 축소 (zoom) ============================
+ * 스크롤 없이 뷰포트에 맞게 전체 페이지를 축소
+ * 1920×1080 기준, 하위 해상도에서 비율에 맞게 줄어듦
+ * ========================================================= */
+@media (max-height: 900px) and (min-height: 769px) {
+    /* 1600×900 대응 */
+    html { zoom: 0.9; }
+}
+
+@media (max-height: 768px) and (min-height: 721px) {
+    /* 1366×768 대응 */
+    html { zoom: 0.82; }
+}
+
+@media (max-height: 720px) {
+    /* 1280×720 대응 */
+    html { zoom: 0.75; }
 }
 
 /* === Title bar ============================================== */
