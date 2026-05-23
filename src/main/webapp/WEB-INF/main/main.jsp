@@ -21,6 +21,7 @@
     <%--    <%@include file="/web/main/main_process.jsp"%>--%>
 
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=1280">
     <link rel="stylesheet" as="style" crossorigin
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css"/>
     <title>반월당 스마트 주차 관리 시스템</title>
