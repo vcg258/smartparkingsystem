@@ -76,10 +76,6 @@
         </div>
     </div>
 
-    <script>
-        const CONTEXT_PATH = '<%= request.getContextPath() %>';
-    </script>
-
     <!-- js 불러오기 -->
     <script src="${pageContext.request.contextPath}/web/static/js/statistic/statistic.js?v=<%= System.currentTimeMillis() %>"></script>
 
