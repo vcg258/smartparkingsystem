@@ -327,7 +327,7 @@ mail.host=smtp.naver.com
 mail.port=587
 mail.smtp.auth=true
 mail.smtp.starttls.enable=true
-mail.userName=your_email@naver.com 
+mail.userName=your_email@naver.com
 mail.password=your_app_password
 ```
 
