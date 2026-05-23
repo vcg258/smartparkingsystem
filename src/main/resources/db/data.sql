@@ -8,7 +8,7 @@ VALUES ('admin', '$2a$12$hvk0XVGUYQk2BwV4SZ9Sz.xCrkCOCgQ3KGCv.QI77JGdJZ9Ri2usW',
        ('test1', '$2a$12$teiNyPb2nUP6vMA9aoQL/OeXC01FtycxknhHtm10CSj4SU/VqQIG6', 'Test1', 'test1@naver.com', true, NULL,
         NULL, NOW()),
        ('demo', '$2a$12$qRYcQrwrNbbJzsh/7.Ng.u/AspuoePpoitMa64PJLYX6/Y4hjsg.m', '데모계정', 'demo@example.com', true, NULL,
-        NULL, NOW());
+        NULL, NOW()); 
 
 -- 기준일은 실행 시점의 CURDATE()입니다.
 -- 시간이 지나도 deletePrevious.sql 실행 후 다시 넣으면 최근/이번 달/과거 통계 테스트가 가능하도록 상대 날짜로 구성합니다.
