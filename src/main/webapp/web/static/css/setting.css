@@ -109,26 +109,32 @@ body > footer  { flex: 0 0 auto; }
     border-radius: var(--radius-sm);
 }
 
-/* === Form layout (cards naturally fit, no internal scroll) === */
+/* === Form layout (cards stretch to fill height) ============ *
+ * 카드들이 남은 세로 공간을 균등하게 차지하도록 stretch.
+ * 노트북 등 DPI 스케일링으로 viewport 가 작아진 환경에서도
+ * 카드 아래 큰 빈 공간이 생기지 않음.                        */
 .setup-area {
     display: flex;
     flex-direction: column;
-    gap: clamp(8px, 1.2vh, 16px);
+    gap: clamp(10px, 1.5vh, 18px);
     min-height: 0;
     flex: 1 1 auto;
     overflow: hidden;
 }
 
 .setup-area > .card {
-    flex: 0 0 auto;
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
 }
 
-/* === Form section cards (scoped — DOES NOT touch Bootstrap .card globally) === */
+/* === Form section cards ==================================== */
 .setup-area .card {
     background: var(--bg-card);
     border: 2px solid var(--border) !important;
     border-radius: var(--radius-lg) !important;
-    padding: clamp(10px, 1.2vh, 18px) clamp(16px, 1.6vw, 28px) clamp(14px, 1.6vh, 22px);
+    padding: clamp(12px, 1.4vh, 22px) clamp(18px, 1.6vw, 28px);
     margin-bottom: 0;
     box-shadow: var(--shadow-card);
     transition: border-color var(--transition);
@@ -140,34 +146,42 @@ body > footer  { flex: 0 0 auto; }
 
 .card-label {
     display: inline-block;
-    font-size: 16px;
+    font-size: clamp(15px, 0.9vw, 18px);
     padding-left: 5px;
-    margin-bottom: 10px;
+    margin-bottom: clamp(8px, 1vh, 14px);
     font-weight: bold;
     color: var(--text-primary);
+    flex: 0 0 auto;
 }
 
-/* === Input row + input item ================================= */
+/* === Input row stretches vertically inside its card ======== */
 .input-row {
     display: flex;
     gap: 15px;
+    flex: 1 1 auto;
+    align-items: stretch;
+    min-height: 0;
 }
 
 .input-item {
     flex: 1;
     border: 1px solid var(--border);
-    padding: clamp(10px, 1.4vh, 18px) clamp(12px, 1.2vw, 20px);
+    padding: clamp(12px, 1.6vh, 22px) clamp(14px, 1.2vw, 22px);
     background: var(--bg-subtle);
     text-align: center;
     border-radius: var(--radius-md);
     transition: border-color var(--transition);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(6px, 1vh, 12px);
 }
 
 .input-item label {
     display: block;
-    font-size: 15px;
+    font-size: clamp(13px, 0.85vw, 16px);
     color: var(--text-secondary);
-    margin-bottom: 10px;
+    margin-bottom: 0;
     font-weight: bold;
 }
 
