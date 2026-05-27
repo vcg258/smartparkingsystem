@@ -355,17 +355,41 @@ main.vh-100 {
     color: var(--text-muted);
 }
 
-/* === 해상도별 자동 축소 (zoom) ============================
- * 스크롤 없이 뷰포트에 맞게 전체 페이지를 축소
- * ========================================================= */
-@media (max-height: 900px) and (min-height: 769px) {
-    html { zoom: 0.9; }
+/* ============================================================
+ * 공용 반응형 블록
+ * ============================================================ */
+
+.navbar-expand-lg .navbar-collapse {
+    display: flex !important;
+    flex-basis: auto !important;
 }
 
-@media (max-height: 768px) and (min-height: 721px) {
-    html { zoom: 0.82; }
+.navbar-expand-lg .navbar-nav { flex-direction: row; }
+
+@media (max-width: 991.98px) {
+    .navbar-expand-lg .navbar-nav { flex-wrap: wrap; gap: 2px; }
+    .navbar-expand-lg .navbar-nav .nav-link { padding: 0.35rem 0.6rem !important; font-size: 13px; }
+    .navbar-expand-lg .navbar-brand { font-size: 15px; }
+    .navbar > .container-fluid { flex-wrap: wrap; gap: 8px; }
 }
 
-@media (max-height: 720px) {
-    html { zoom: 0.75; }
+@media (max-width: 767.98px), (max-height: 599.98px) {
+    html, body { height: auto !important; overflow: visible !important; }
+    body > .container-fluid,
+    body > .container,
+    .container#container,
+    .content,
+    .setup-area,
+    #parking-board,
+    .table-responsive {
+        overflow: visible !important;
+        min-height: 0;
+        flex: 0 0 auto !important;
+        height: auto !important;
+    }
+    .input-row { flex-direction: column; }
+    .content { grid-template-columns: 1fr !important; }
+    .info-box2 { grid-column: 1 !important; grid-row: auto !important; }
+    #chart_container { min-height: 320px !important; }
+    .section-header form { flex-wrap: wrap; justify-content: flex-start !important; }
 }
