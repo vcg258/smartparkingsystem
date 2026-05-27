@@ -53,12 +53,10 @@
     --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
-/* === Reset (page-local) ===================================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* === Reset (page-local) ===================================== *
+ * Only reset box-sizing — never margin/padding via *, since it
+ * kills Bootstrap's navbar spacing.                            */
+* { box-sizing: border-box; }
 
 /* === Fit-to-viewport (1920×1080, no scroll) ================ */
 html, body {

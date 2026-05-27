@@ -53,12 +53,11 @@
     --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
-/* === Reset (page-local) ===================================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* === Reset (page-local) ===================================== *
+ * IMPORTANT: only reset box-sizing. The previous `* { margin:0; padding:0 }`
+ * killed Bootstrap's navbar padding (py-3, nav-link, navbar-brand) and made
+ * the navbar render tiny on this page.                                    */
+* { box-sizing: border-box; }
 
 /* === Fit-to-viewport (1920×1080, no scroll) ================ */
 html, body {
