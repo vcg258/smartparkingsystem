@@ -22,9 +22,21 @@ public enum ConnectionUtil {
                 ? System.getenv("DB_HOST")
                 : "localhost";
 
-        config.setJdbcUrl("jdbc:mariadb://" + dbHost + ":3306/smart_parking_system");
-        config.setUsername("system_user");
-        config.setPassword("0220");
+        String dbName = System.getenv("DB_NAME") != null
+                ? System.getenv("DB_NAME")
+                : "smart_parking_system";
+
+        String dbUser = System.getenv("DB_USER") != null
+                ? System.getenv("DB_USER")
+                : "system_user";
+
+        String dbPassword = System.getenv("DB_PASSWORD") != null
+                ? System.getenv("DB_PASSWORD")
+                : "0220";
+
+        config.setJdbcUrl("jdbc:mariadb://" + dbHost + ":3306/" + dbName);
+        config.setUsername(dbUser);
+        config.setPassword(dbPassword);
 
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");

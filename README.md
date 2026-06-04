@@ -320,7 +320,7 @@ config.setPassword("본인 비밀번호");
 
 ### 3. 메일 발송 설정
 
-`src/main/resources/mail.properties.example`을 복사해 `mail.properties`를 생성한 뒤 발신 계정 정보를 입력합니다.
+`src/main/resources/mail.properties`에 발신 계정 정보를 직접 입력합니다.
 
 ```properties
 mail.host=smtp.naver.com

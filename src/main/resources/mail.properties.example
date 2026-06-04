@@ -1,0 +1,6 @@
+mail.host=smtp.naver.com
+mail.port=587
+mail.smtp.auth=true
+mail.smtp.starttls.enable=true
+mail.userName=발신자_네이버_이메일@naver.com
+mail.password=네이버_앱_비밀번호

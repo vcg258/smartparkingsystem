@@ -91,5 +91,7 @@ Thumbs.db
 
 # 민감 정보 파일
 src/main/resources/mail.properties
+.env
+.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,gradle
