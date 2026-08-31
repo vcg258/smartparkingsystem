@@ -260,7 +260,7 @@ sequenceDiagram
 
 **Backend**
 
-| 항목                  | 내용                                        |
+| 항목                | 내용                                      |
 |---------------------|-------------------------------------------|
 | Language            | Java 17                                   |
 | Runtime             | Jakarta EE 6.0 (Servlet API 6.0.0)        |
@@ -278,7 +278,7 @@ sequenceDiagram
 
 **Frontend**
 
-| 항목            | 내용              |
+| 항목          | 내용            |
 |---------------|-----------------|
 | View          | JSP             |
 | CSS Framework | Bootstrap 5.3.2 |
