@@ -500,11 +500,8 @@ com.example.parkingsystem
 
 | 문서        | 링크                                                                                                         |
 |-----------|------------------------------------------------------------------------------------------------------------|
-| 요구사항 정의서  | [링크](https://docs.google.com/spreadsheets/d/1iHmiVPuaO9F5KZd4SGHV1pBwFwcBb6wl92UeOPcnZw/edit?usp=sharing)  |
 | 테이블 정의서   | [링크](https://docs.google.com/document/d/1NBdcpwGBkzLsNOaOyBEcQb6qMM0GrEwSTqb76FuH4kI/edit?usp=sharing)     |
 | 패키지 구조 정의 | [링크](https://docs.google.com/spreadsheets/d/1RH95hQf4t-xsXRr7OgITwlFmGdQ6fj9duR-wXzBGSaE/edit?usp=sharing) |
-| 테스트 시트    | <!-- 링크 작성 -->                                                                                             |
-| 클래스 명세서   | <!-- 링크 작성 -->                                                                                             |
 
 ---
 
